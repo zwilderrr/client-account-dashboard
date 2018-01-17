@@ -21,9 +21,9 @@ class AccountContainer extends React.Component {
     })
   }
 
-  filterTransactions = (accountsToDisplay) => {
+  filterTransactions = (allAccounts) => {
     //this.props.transactionData.filter(transaction => {
-    //accountsToDisplay.includes(transaction.account)
+    //allAccounts.includes(transaction.account)
   // })
     if (this.state.searchInput) {
       //filter by search input
@@ -33,7 +33,7 @@ class AccountContainer extends React.Component {
   }
 
   getAccounts = () => {
-    this.props.accountsToDisplay.forEach(accountType => {
+    this.props.allAccounts.forEach(accountType => {
       // account component with transactionData={this.props.transactionData[accountType]}
       //pass in toggleAccountDetails
     })
@@ -44,7 +44,7 @@ class AccountContainer extends React.Component {
   }
 
   render() {
-    const transactionData = this.filterTransactions(this.props.settings.accountsToDisplay)
+    const transactionData = this.filterTransactions(this.props.settings.allAccounts)
     const accounts = this.getAccounts()
 
     return(
@@ -66,7 +66,7 @@ class AccountContainer extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    accountsToDisplay: state.settings.accountsToDisplay,
+    allAccounts: state.settings.allAccounts,
     transactionData: state.data.transactionData
   }
 }
