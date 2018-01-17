@@ -1,21 +1,32 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import DashboardContainer from './components/DashboardContainer'
+import * as DataActions from './actions/data'
+import * as SettingsActions from './actions/settings'
 
 class App extends Component {
+
+  componentDidMount = () => {
+    // set user account array
+    // fetch and parse data
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        <h1>App</h1>
+        <DashboardContainer />
       </div>
     );
   }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    data: bindActionCreators(DataActions, dispatch),
+    settings: bindActionCreators(SettingsActions, dispatch)
+  }
+}
+
+export default connect(null, mapDispatchToProps)(App)
