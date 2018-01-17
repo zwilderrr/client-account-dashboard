@@ -10,7 +10,7 @@ class App extends React.Component {
   componentDidMount = () => {
     let custAccounts = ["Checking", "Savings"]
     let custId = 0
-    this.props.settings.setDisplayAccounts(custAccounts)
+    this.props.settings.setAllAccounts(custAccounts)
     this.props.data.getTransactionData(custId, this.parseCustData)
   }
 

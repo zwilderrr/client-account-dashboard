@@ -24,12 +24,24 @@ class AccountContainer extends React.Component {
 
   getAccounts = () => {
     return this.props.allAccounts.map((accountName, index) =>
-    <Account key={index} data={this.props.transactionData[accountName]} />
+      <Account
+        key={index}
+        data={this.props.transactionData[accountName]}
+        showAcctDetails={this.showAcctDetails}
+      />
     )
   }
 
-  filterTransactions = () => {
-    let displayAccounts = this.props.displayAccounts
+  showAcctDetails = (event) => {
+    if (this.props.displayAccounts.length === 1) {
+      this.props.settings.setDisplayAccounts(this.props.allAccounts)
+    } else {
+      this.props.settings.setDisplayAccounts([event.target.innerText])
+    }
+  }
+
+  filterTransactions = (accounts) => {
+    let displayAccounts = accounts
     if (displayAccounts.length === 0) {
       displayAccounts = this.props.allAccounts
     }
@@ -49,7 +61,7 @@ class AccountContainer extends React.Component {
   }
 
   render() {
-    const transactionData = this.filterTransactions()
+    const transactionData = this.filterTransactions(this.props.displayAccounts)
     const accounts = this.getAccounts()
 
     return(

@@ -13,12 +13,17 @@ class Account extends React.Component {
     }
   }
 
-  //toggleShowDetails
+  toggleShowDetails = (event) => {
+    this.setState({
+      showDetails: this.state.showDetails ? false : true
+    })
+    this.props.showAcctDetails(event)
+  }
 
   render() {
     return(
       <div>
-        {this.props.data.accountName}
+        <h1 onClick={this.toggleShowDetails}>{this.props.data.accountName}</h1>
       </div>
     )
   }
