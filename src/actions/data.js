@@ -12,6 +12,10 @@ export function getTransactionData(custId, parseCustData) {
       .then(res => res.json())
       .then(res => {
         parseCustData(res)
+        dispatch({
+          type: "SET_RAW_DATA",
+          payload: res
+        })
       })
     .catch(res => {
       // dispatch({

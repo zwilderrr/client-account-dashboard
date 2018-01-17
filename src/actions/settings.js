@@ -1,7 +1,7 @@
 export function setDisplayAccounts(custAccounts) {
   return function(dispatch) {
     dispatch({
-      type: "SET_ACCOUNTS_TO_DISPLAY",
+      type: "SET_ALL_ACCOUNTS",
       payload: custAccounts
     })
   }

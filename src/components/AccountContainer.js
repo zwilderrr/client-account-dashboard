@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import TransactionTable from './TransactionTable'
+import Account from './Account'
 import * as SettingsActions from '../actions/settings'
 
 class AccountContainer extends React.Component {
@@ -21,35 +22,41 @@ class AccountContainer extends React.Component {
     })
   }
 
-  filterTransactions = (allAccounts) => {
-    //this.props.transactionData.filter(transaction => {
-    //allAccounts.includes(transaction.account)
-  // })
-    if (this.state.searchInput) {
-      //filter by search input
+  getAccounts = () => {
+    return this.props.allAccounts.map((accountName, index) =>
+    <Account key={index} data={this.props.transactionData[accountName]} />
+    )
+  }
+
+  filterTransactions = () => {
+    let displayAccounts = this.props.displayAccounts
+    if (displayAccounts.length === 0) {
+      displayAccounts = this.props.allAccounts
     }
 
-    //return transactionData
-  }
-
-  getAccounts = () => {
-    this.props.allAccounts.forEach(accountType => {
-      // account component with transactionData={this.props.transactionData[accountType]}
-      //pass in toggleAccountDetails
+    let filteredTransactions = this.props.rawData.filter(transaction => {
+      let transTo = transaction.transTo.split(" Account")[0]
+      let transFrom = transaction.transFrom.split(" Account")[0]
+      return (
+        displayAccounts.includes(transTo) || displayAccounts.includes(transFrom)
+      )
     })
-  }
 
-  toggleAccountDetails = (event) => {
-    this.settings.setDisplayAccounts(event.target.innerText)
+    if (this.state.searchInput) {
+      filteredTransactions = this.filterBySearchTerm(filteredTransactions)
+    }
+    return filteredTransactions
   }
 
   render() {
-    const transactionData = this.filterTransactions(this.props.settings.allAccounts)
+    const transactionData = this.filterTransactions()
     const accounts = this.getAccounts()
 
     return(
       <div>
         <h1>AccountContainer</h1>
+
+        {accounts}
 
         <input
           type="text"
@@ -57,6 +64,7 @@ class AccountContainer extends React.Component {
           value={this.state.searchInput}
           onChange={this.handleSearchInput}
         />
+
 
         <TransactionTable transactionData={transactionData} />
       </div>
@@ -67,7 +75,9 @@ class AccountContainer extends React.Component {
 const mapStateToProps = (state) => {
   return {
     allAccounts: state.settings.allAccounts,
-    transactionData: state.data.transactionData
+    displayAccounts: state.settings.displayAccounts,
+    transactionData: state.data.transactionData,
+    rawData: state.data.rawData
   }
 }
 

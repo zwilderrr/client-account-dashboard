@@ -1,6 +1,6 @@
-export default function settingReducer(state = {allAccounts: []}, action) {
+export default function settingReducer(state = {allAccounts: [], displayAccounts: []}, action) {
   switch (action.type) {
-    case "SET_ACCOUNTS_TO_DISPLAY":
+    case "SET_ALL_ACCOUNTS":
       return state = {...state, allAccounts: action.payload}
     default:
       return state

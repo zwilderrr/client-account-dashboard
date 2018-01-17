@@ -13,11 +13,12 @@ class Account extends React.Component {
     }
   }
 
-  render() {
+  //toggleShowDetails
 
+  render() {
     return(
       <div>
-        {this.props.accountType} Account
+        {this.props.data.accountName}
       </div>
     )
   }

@@ -15,33 +15,41 @@ class App extends React.Component {
   }
 
   parseCustData = (res) => {
+    //this assumes each account has a different name/identifyer
     let allAccounts = this.props.allAccounts
-    let parsedData = allAccounts.map(accountType => {
+    let parsedData = allAccounts.map(accountName => {
 
-      let transactions = this.filterTransactions(res, accountType)
-      let balance = this.calculateBalance(transactions, allAccounts, accountType)
+      let transactions = this.filterTransactions(res, accountName)
+      let balance = this.calculateBalance(transactions, allAccounts, accountName)
       return {
-        accountType: accountType,
-        transactions: {
-          transactions
-        },
+        accountName: accountName,
+        transactions,
         balance: balance
       }
     })
-    this.props.data.setTransactionData(parsedData)
+
+    //adds an O(n) calculation but makes for O(1) account access
+    const dataObj = {}
+    parsedData.forEach(account => {
+      dataObj[account.accountName] = account
+    })
+
+    this.props.data.setTransactionData(dataObj)
+    // without making obj
+    // this.props.data.setTransactionData(parsedData)
   }
 
-  filterTransactions = (res, accountType) => {
+  filterTransactions = (res, accountName) => {
     return res.filter(transaction => {
       let transTo = transaction.transTo.split(" Account")[0]
       let transFrom = transaction.transFrom.split(" Account")[0]
       return (
-        accountType.includes(transTo) || accountType.includes(transFrom)
+        accountName.includes(transTo) || accountName.includes(transFrom)
       )
     })
   }
 
-  calculateBalance = (transactions, allAccounts, accountType) => {
+  calculateBalance = (transactions, allAccounts, accountName) => {
     let sum = 0
     transactions.forEach(transaction => {
       let transTo = transaction.transTo.split(" Account")[0]
@@ -49,7 +57,7 @@ class App extends React.Component {
       //conditional required to handle internal transactions, which are listed as negative
       if (allAccounts.includes(transTo) && allAccounts.includes(transFrom)) {
         //"negitive value" coming into the account
-        if (transTo === accountType) {
+        if (transTo === accountName) {
           sum += -transaction.transAmt
         } else {
           //"negitive value" going out
@@ -62,21 +70,36 @@ class App extends React.Component {
     return sum
   }
 
+  setDisplay = () => {
+    if (this.props.dataLoaded) {
+      return (
+        <div>
+          <h1>App</h1>
+          <DashboardContainer />
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          Loading your data..
+        </div>
+      )
+    }
+  }
+
 
   render() {
     return (
-      <div>
-        <h1>App</h1>
-        <DashboardContainer />
-      </div>
-    );
+      this.setDisplay()
+    )
   }
 }
 
 const mapStateToProps = (state) => {
   return {
     allAccounts: state.settings.allAccounts,
-    transactionData: state.data.transactionData
+    transactionData: state.data.transactionData,
+    dataLoaded: state.data.dataLoaded
   }
 }
 
