@@ -60,6 +60,23 @@ class AccountContainer extends React.Component {
     return filteredTransactions
   }
 
+  filterBySearchTerm = (filteredTransactions) => {
+    let filteredBySearch = []
+    filteredTransactions.map(transaction => {
+      for (var key in transaction) {
+        if (transaction[key]
+          .toString()
+          .toLowerCase()
+          .includes(this.state.searchInput)) {
+          filteredBySearch.push(transaction)
+          break
+        }
+      }
+    })
+    return filteredBySearch
+
+  }
+
   render() {
     const transactionData = this.filterTransactions(this.props.displayAccounts)
     const accounts = this.getAccounts()
