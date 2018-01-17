@@ -8,8 +8,15 @@ import * as SettingsActions from './actions/settings'
 class App extends Component {
 
   componentDidMount = () => {
-    // set user account array
-    // fetch and parse data
+    let custAccounts = ["Checking, Savings"]
+    let custId = 0
+    this.settings.setDisplayAccounts(custAccounts)
+    this.data.getTransactionData(custId, this.parseCustData)
+  }
+
+  parseCustData(res) {
+
+
   }
 
   render() {
