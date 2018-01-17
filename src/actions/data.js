@@ -23,8 +23,10 @@ export function getTransactionData(custId, parseCustData) {
   }
 
 export function setTransactionData(parsedData) {
-  dispatch({
-    type: "SET_TRANSACTION_DATA",
-    payload: parsedData
-  })
+  return function(dispatch) {
+    dispatch({
+      type: "SET_TRANSACTION_DATA",
+      payload: parsedData
+    })
+  }
 }

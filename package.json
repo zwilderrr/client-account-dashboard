@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bootstrap": "^3.3.7",
+    "moment": "^2.20.1",
     "react": "^16.2.0",
+    "react-bootstrap": "^0.32.0",
     "react-bootstrap-table": "^4.3.1",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",

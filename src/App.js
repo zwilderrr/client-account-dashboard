@@ -5,17 +5,18 @@ import DashboardContainer from './components/DashboardContainer'
 import * as DataActions from './actions/data'
 import * as SettingsActions from './actions/settings'
 
-class App extends Component {
+class App extends React.Component {
 
   componentDidMount = () => {
     let custAccounts = ["Checking, Savings"]
     let custId = 0
-    this.settings.setDisplayAccounts(custAccounts)
-    this.data.getTransactionData(custId, this.parseCustData)
+    this.props.settings.setDisplayAccounts(custAccounts)
+    this.props.data.getTransactionData(custId, this.parseCustData)
   }
 
   parseCustData(res) {
-
+    console.log(this.props.accountsToDisplay);
+    console.log(res);
 
   }
 
@@ -26,6 +27,12 @@ class App extends Component {
         <DashboardContainer />
       </div>
     );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    accountsToDisplay: this.state.settings.accountsToDisplay
   }
 }
 
