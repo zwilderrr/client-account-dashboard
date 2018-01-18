@@ -118,11 +118,12 @@ class AccountContainer extends React.Component {
       <div>
         <h1>AccountContainer</h1>
 
-        {accounts}
         <div>
           <DoughnutChart data={chartData} options={{percentageInnerCutout: 70, animationEasing: 'easeInOutQuart', labels: true}}/>
         </div>
 
+        {accounts}
+        
         <input
           type="text"
           placeholder="Search Transactions..."

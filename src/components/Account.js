@@ -1,5 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import CountUp from 'react-countup';
+
 // import { bindActionCreators } from 'redux'
 
 
@@ -27,6 +29,14 @@ class Account extends React.Component {
     return(
       <div>
         <h1 onClick={this.toggleShowDetails}>{this.props.data.accountName}</h1>
+        <CountUp start={0} end={this.props.data.balance}
+          duration={1.5}
+          useGrouping={true}
+          separator={","}
+          decimals={2}
+          decimal={"."}
+          prefix={"$"}
+        />
 
       </div>
     )
