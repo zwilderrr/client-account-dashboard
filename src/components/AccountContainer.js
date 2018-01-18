@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux'
 import TransactionTable from './TransactionTable'
 import Account from './Account'
 import * as SettingsActions from '../actions/settings'
+const DoughnutChart = require("react-chartjs").Doughnut
+
 
 class AccountContainer extends React.Component {
 
@@ -32,11 +34,20 @@ class AccountContainer extends React.Component {
     )
   }
 
-  showAcctDetails = (event) => {
-    if (this.props.displayAccounts.length === 1) {
-      this.props.settings.setDisplayAccounts(this.props.allAccounts)
+  showAcctDetails = (event, cb) => {
+    if (this.props.displayingAccountDetails) {
+      //prevents two account details being open
+      if (event.target.innerText === this.props.displayAccounts[0]) {
+        this.props.settings.setDisplayAccounts(this.props.allAccounts)
+        this.props.settings.displayingAccountDetails(false)
+        cb(false)
+      } else {
+        return
+      }
     } else {
       this.props.settings.setDisplayAccounts([event.target.innerText])
+      this.props.settings.displayingAccountDetails(true)
+      cb(true)
     }
   }
 
@@ -74,18 +85,43 @@ class AccountContainer extends React.Component {
       }
     })
     return filteredBySearch
+  }
 
+  getPieChartData = () => {
+    const data = []
+    const colors = [
+      "#3498db",
+      "#2ecc71",
+      "#f39c12",
+      "#34495e",
+      "#7f8c8d"
+    ]
+    let colorIndex = 0
+    this.props.allAccounts.map((accountName) => {
+      colorIndex === colors.length - 1 ? colorIndex = 1 : colorIndex
+      data.push({
+        label: `${accountName} Account`,
+        value: this.props.transactionData[accountName].balance,
+        color: colors[colorIndex]
+      })
+      colorIndex++
+    })
+
+    return data
   }
 
   render() {
     const transactionData = this.filterTransactions(this.props.displayAccounts)
     const accounts = this.getAccounts()
-
+    const chartData = this.getPieChartData()
     return(
       <div>
         <h1>AccountContainer</h1>
 
         {accounts}
+        <div>
+          <DoughnutChart data={chartData} options={{percentageInnerCutout: 70, animationEasing: 'easeInOutQuart', labels: true}}/>
+        </div>
 
         <input
           type="text"
@@ -93,6 +129,7 @@ class AccountContainer extends React.Component {
           value={this.state.searchInput}
           onChange={this.handleSearchInput}
         />
+
 
 
         <TransactionTable transactionData={transactionData} />
@@ -105,6 +142,7 @@ const mapStateToProps = (state) => {
   return {
     allAccounts: state.settings.allAccounts,
     displayAccounts: state.settings.displayAccounts,
+    displayingAccountDetails: state.settings.displayingAccountDetails,
     transactionData: state.data.transactionData,
     rawData: state.data.rawData
   }

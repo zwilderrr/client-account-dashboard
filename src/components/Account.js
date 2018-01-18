@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+// import { bindActionCreators } from 'redux'
 
 
 class Account extends React.Component {
@@ -13,17 +13,21 @@ class Account extends React.Component {
     }
   }
 
-  toggleShowDetails = (event) => {
+  setShowDetails = (boolean) => {
     this.setState({
-      showDetails: this.state.showDetails ? false : true
+      showDetails: boolean
     })
-    this.props.showAcctDetails(event)
+  }
+
+  toggleShowDetails = (event) => {
+    this.props.showAcctDetails(event, this.setShowDetails)
   }
 
   render() {
     return(
       <div>
         <h1 onClick={this.toggleShowDetails}>{this.props.data.accountName}</h1>
+
       </div>
     )
   }

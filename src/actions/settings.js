@@ -14,3 +14,11 @@ export function setDisplayAccounts(accounts) {
     })
   }
 }
+export function displayingAccountDetails(boolean) {
+  return function(dispatch) {
+    dispatch({
+      type: "DISPLAY_ACCOUNT_DETAILS",
+      payload: boolean
+    })
+  }
+}
