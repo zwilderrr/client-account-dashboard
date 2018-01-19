@@ -19,7 +19,7 @@ class App extends React.Component {
     let allAccounts = this.props.allAccounts
     let parsedData = allAccounts.map(accountName => {
       let transactions = this.filterTransactions(res, accountName)
-      let balance = transactions[0].currentBalance
+      let balance = transactions[0].runningBalance
       return {
         accountName: accountName,
         transactions,
@@ -40,7 +40,7 @@ class App extends React.Component {
 
   filterTransactions = (res, accountName) => {
     let transactions = []
-    let currentBalance = 0
+    let runningBalance = 0
 
     for (var i = res.length - 1; i >= 0; i--) {
       let transaction = res[i]
@@ -48,8 +48,8 @@ class App extends React.Component {
       let transFrom = transaction.transFrom.split(" Account")[0]
 
       if (this.isOfThisAccount(transaction, accountName, transTo, transFrom)) {
-        currentBalance += this.transactionAmt(transaction, accountName, transTo, transFrom)
-        transaction.currentBalance = currentBalance
+        runningBalance += this.transactionAmt(transaction, accountName, transTo, transFrom)
+        transaction.runningBalance = runningBalance
         transactions.unshift(transaction)
       }
     }
