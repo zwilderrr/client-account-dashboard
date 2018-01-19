@@ -19,7 +19,7 @@ class App extends React.Component {
     let allAccounts = this.props.allAccounts
     let parsedData = allAccounts.map(accountName => {
       let transactions = this.filterTransactions(res, accountName)
-      let balance = this.calculateBalance(transactions, allAccounts, accountName)
+      let balance = transactions[0].currentBalance
       return {
         accountName: accountName,
         transactions,
@@ -39,34 +39,35 @@ class App extends React.Component {
   }
 
   filterTransactions = (res, accountName) => {
-    return res.filter(transaction => {
+    let transactions = []
+    let currentBalance = 0
+
+    for (var i = res.length - 1; i >= 0; i--) {
+      let transaction = res[i]
       let transTo = transaction.transTo.split(" Account")[0]
       let transFrom = transaction.transFrom.split(" Account")[0]
-      return (
-        accountName.includes(transTo) || accountName.includes(transFrom)
-      )
-    })
+
+      if (this.isOfThisAccount(transaction, accountName, transTo, transFrom)) {
+        currentBalance += this.transactionAmt(transaction, accountName, transTo, transFrom)
+        transaction.currentBalance = currentBalance
+        transactions.unshift(transaction)
+      }
+    }
+    return transactions
   }
 
-  calculateBalance = (transactions, allAccounts, accountName) => {
-    let sum = 0
-    transactions.forEach(transaction => {
-      let transTo = transaction.transTo.split(" Account")[0]
-      let transFrom = transaction.transFrom.split(" Account")[0]
-      //conditional required to handle internal transactions, which are listed as negative
-      if (allAccounts.includes(transTo) && allAccounts.includes(transFrom)) {
-        //"negitive value" coming into the account
-        if (transTo === accountName) {
-          sum += -transaction.transAmt
-        } else {
-          //"negitive value" going out
-          sum += transaction.transAmt
-        }
-      } else {
-        sum += transaction.transAmt
+  transactionAmt = (transaction, accountName, transTo, transFrom) => {
+    if (this.props.allAccounts.includes(transTo) && this.props.allAccounts.includes(transFrom)) {
+      //"negitive value" coming into the account
+      if (transTo === accountName) {
+        return -transaction.transAmt
       }
-    })
-    return sum
+    }
+    return transaction.transAmt
+  }
+
+  isOfThisAccount = (transaction, accountName, transTo, transFrom) => {
+    return (accountName.includes(transTo) || accountName.includes(transFrom))
   }
 
   setDisplay = () => {
@@ -88,6 +89,7 @@ class App extends React.Component {
 
 
   render() {
+    console.log(this.props.transactionData);
     return (
       this.setDisplay()
     )

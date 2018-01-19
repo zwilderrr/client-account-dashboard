@@ -87,67 +87,56 @@ class AccountContainer extends React.Component {
     return filteredBySearch
   }
 
-  getPieChartData = () => {
-    let data = {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-          datasets: [
-            {
-              label: 'My First dataset',
-              fill: false,
-              lineTension: 0.1,
-              backgroundColor: 'rgba(75,192,192,0.4)',
-              borderColor: 'rgba(75,192,192,1)',
-              borderCapStyle: 'butt',
-              borderDash: [],
-              borderDashOffset: 0.0,
-              borderJoinStyle: 'miter',
-              pointBorderColor: 'rgba(75,192,192,1)',
-              pointBackgroundColor: '#fff',
-              pointBorderWidth: 1,
-              pointHoverRadius: 5,
-              pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-              pointHoverBorderColor: 'rgba(220,220,220,1)',
-              pointHoverBorderWidth: 2,
-              pointRadius: 1,
-              pointHitRadius: 10,
-              data: [65, 59, 80, 81, 56, 55, 40]
-            }
-          }
-        ]
-      }
+  getChartSettings = () => {
+
 
     const colors = [
-      "#3498db",
-      "#2ecc71",
-      "#f39c12",
-      "#34495e",
-      "#7f8c8d"
+      "rgba(52,152,219,.5)",
+      "rgba(52,152,219,.5)",
+      "rgba(46,204,113,.5)",
+      "rgba(46,204,113,.45)",
     ]
     let colorIndex = 0
-    this.props.allAccounts.map((accountName) => {
-      colorIndex === colors.length - 1 ? colorIndex = 1 : colorIndex
-      data.push({
-        label: `${accountName} Account`,
-        value: this.props.transactionData[accountName].balance,
-        color: colors[colorIndex]
-      })
-      colorIndex++
+
+    let chartData = {
+      labels: [],
+      datasets: [
+        {
+          data: [],
+          backgroundColor: [],
+          hoverBackgroundColor: [],
+          hoverBorderColor: "transparent"
+        }
+      ]
+  	}
+
+    let chartOptions = {
+      cutoutPercentage: 80,
+    }
+
+    this.props.allAccounts.map(accountName => {
+      (colorIndex >= colors.length - 1) ? colorIndex = 1 : colorIndex
+      chartData.labels.push(`${accountName} Account`)
+      chartData.datasets[0].data.push(this.props.transactionData[accountName].balance)
+      chartData.datasets[0].backgroundColor.push(colors[colorIndex])
+      chartData.datasets[0].hoverBackgroundColor.push(colors[colorIndex + 1])
+      colorIndex += 2
     })
 
-    return data
+    return [chartData, chartOptions]
   }
+
 
   render() {
     const transactionData = this.filterTransactions(this.props.displayAccounts)
     const accounts = this.getAccounts()
-    const chartData = this.getPieChartData()
+    const chartData = this.getChartSettings()[0]
+    const chartOptions = this.getChartSettings()[1]
     return(
       <div>
         <h1>AccountContainer</h1>
 
-        <Doughnut data={chartData} options={{
-        		maintainAspectRatio: true
-        	}}/>
+        <Doughnut onElementsClick={this.click} data={chartData} options={chartOptions}/>
 
         {accounts}
 
@@ -161,7 +150,7 @@ class AccountContainer extends React.Component {
 
 
 
-        <TransactionTable transactionData={transactionData} />
+        <TransactionTable transactionData={transactionData}/>
       </div>
     )
   }
@@ -194,7 +183,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(AccountContainer)
 //         label: 'My First dataset',
 //         fill: false,
 //         lineTension: 0.1,
-//         backgroundColor: 'rgba(75,192,192,0.4)',
 //         borderColor: 'rgba(75,192,192,1)',
 //         borderCapStyle: 'butt',
 //         borderDash: [],

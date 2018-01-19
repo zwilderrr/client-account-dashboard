@@ -26,25 +26,52 @@ class Account extends React.Component {
     this.props.showAcctDetails(event, this.setShowDetails)
   }
 
-  getLineChartData = () => {
-    //make balance over time be by the minute and use real transactions so you can click on them to display a modal box with a transaction in full details
-      return {
-    	labels: ["January", "February", "March", "April", "May", "June", "July"],
-    	datasets: [
-    		{
-    			label: "",
-    			fillColor: "rgba(46,204,113,.5)",
-    			strokeColor: "#2ecc71",
-    			highlightFill: "#2ecc71",
-    			highlightStroke: "#2ecc71",
-    			data: [2800, 4800, 4000, 1900, 860, 2700, 9000]
-    		}
-    	]
-    };
+  getChartSettings = () => {
+    let acctTrans = this.props.data.length
+    let delta = Math.round(acctTrans / 5)
+    let chartData = {
+      labels: [//date//
+      ],
+      datasets: [
+        {
+          label: "Balance over time",
+          fillColor: "rgba(46,204,113,.5)",
+          strokeColor: "#2ecc71",
+          highlightFill: "#2ecc71",
+          highlightStroke: "#2ecc71",
+          backgroundColor: "rgba(219, 52, 52, 0.5)",
+          borderColor: "transparent",
+          data: [
+            //balance
+          ],
+          fill: false,
+        }
+      ]
+    }
+
+    let chartOptions = {
+      title: {
+        display: true,
+        text:'Chart.js Line Chart'
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      }
+    }
+
+    for (var i = 0; i < acctTrans; i += delta) {
+      chartData.labels.unshift(acctTrans[i].transTime)
+      chartData.datasets[0].data.unshift(acctTrans[i].currentBalance)
+
+    }
+
+    return [chartData, chartOptions]
   }
 
   render() {
-    const chartData = this.getLineChartData()
+    const chartData = this.getChartSettings()[0]
+    const chartOptions = this.getChartSettings()[1]
 
     return(
       <div>
