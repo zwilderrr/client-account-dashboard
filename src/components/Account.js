@@ -27,11 +27,11 @@ class Account extends React.Component {
   }
 
   getChartSettings = () => {
-    let acctTrans = this.props.data.length
-    let delta = Math.round(acctTrans / 5)
+    let acctTrans = this.props.data.transactions
+
+    // let delta = Math.round(acctTrans.length / 5)
     let chartData = {
-      labels: [//date//
-      ],
+      labels: [],
       datasets: [
         {
           label: "Balance over time",
@@ -57,12 +57,15 @@ class Account extends React.Component {
       tooltips: {
         mode: 'index',
         intersect: false,
-      }
+      },
+      maintainAspectRatio: true,
+      responsive: true
+
     }
 
-    for (var i = 0; i < acctTrans; i += delta) {
-      chartData.labels.unshift(acctTrans[i].transTime)
-      chartData.datasets[0].data.unshift(acctTrans[i].currentBalance)
+    for (var i = 0; i < acctTrans.length; i++) {
+      chartData.labels.push(acctTrans[i].transTime)
+      chartData.datasets[0].data.push(acctTrans[i].runningBalance)
 
     }
 
@@ -70,8 +73,10 @@ class Account extends React.Component {
   }
 
   render() {
-    const chartData = this.getChartSettings()[0]
-    const chartOptions = this.getChartSettings()[1]
+    const chartSettings = this.getChartSettings()
+    const chartData = chartSettings[0]
+    const chartOptions = chartSettings[1]
+    console.log(chartData);
 
     return(
       <div>
@@ -87,9 +92,7 @@ class Account extends React.Component {
         />
         </div>
 
-        <Line data={chartData} options={{
-        		maintainAspectRatio: true
-        	}}/>
+        <Line data={chartData} options={chartOptions}/>
 
       </div>
     )

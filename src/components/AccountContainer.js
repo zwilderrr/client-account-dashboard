@@ -73,7 +73,7 @@ class AccountContainer extends React.Component {
 
   filterBySearchTerm = (filteredTransactions) => {
     let filteredBySearch = []
-    filteredTransactions.map(transaction => {
+    filteredTransactions.forEach(transaction => {
       for (var key in transaction) {
         if (transaction[key]
           .toString()
@@ -112,10 +112,14 @@ class AccountContainer extends React.Component {
 
     let chartOptions = {
       cutoutPercentage: 80,
+      maintainAspectRatio: true,
+      responsive: true
     }
 
-    this.props.allAccounts.map(accountName => {
-      (colorIndex >= colors.length - 1) ? colorIndex = 1 : colorIndex
+    this.props.allAccounts.forEach(accountName => {
+      if (colorIndex >= colors.length - 1) {
+        colorIndex = 1
+      }
       chartData.labels.push(`${accountName} Account`)
       chartData.datasets[0].data.push(this.props.transactionData[accountName].balance)
       chartData.datasets[0].backgroundColor.push(colors[colorIndex])
