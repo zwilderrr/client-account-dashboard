@@ -18,7 +18,6 @@ class App extends React.Component {
     //this assumes each account has a different name/identifyer
     let allAccounts = this.props.allAccounts
     let parsedData = allAccounts.map(accountName => {
-
       let transactions = this.filterTransactions(res, accountName)
       let balance = this.calculateBalance(transactions, allAccounts, accountName)
       return {

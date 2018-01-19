@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import TransactionTable from './TransactionTable'
 import Account from './Account'
 import * as SettingsActions from '../actions/settings'
-const DoughnutChart = require("react-chartjs").Doughnut
+import {Doughnut} from 'react-chartjs-2';
 
 
 class AccountContainer extends React.Component {
@@ -114,16 +114,42 @@ class AccountContainer extends React.Component {
     const transactionData = this.filterTransactions(this.props.displayAccounts)
     const accounts = this.getAccounts()
     const chartData = this.getPieChartData()
+    const data = {
+labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+datasets: [
+{
+  label: 'My First dataset',
+  fill: false,
+  lineTension: 0.1,
+  backgroundColor: 'rgba(75,192,192,0.4)',
+  borderColor: 'rgba(75,192,192,1)',
+  borderCapStyle: 'butt',
+  borderDash: [],
+  borderDashOffset: 0.0,
+  borderJoinStyle: 'miter',
+  pointBorderColor: 'rgba(75,192,192,1)',
+  pointBackgroundColor: '#fff',
+  pointBorderWidth: 1,
+  pointHoverRadius: 5,
+  pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+  pointHoverBorderColor: 'rgba(220,220,220,1)',
+  pointHoverBorderWidth: 2,
+  pointRadius: 1,
+  pointHitRadius: 10,
+  data: [65, 59, 80, 81, 56, 55, 40]
+}
+]
+};
     return(
       <div>
         <h1>AccountContainer</h1>
 
-        <div>
-          <DoughnutChart data={chartData} options={{percentageInnerCutout: 70, animationEasing: 'easeInOutQuart', labels: true}}/>
-        </div>
+        <Doughnut data={data} options={{
+        		maintainAspectRatio: true
+        	}}/>
 
         {accounts}
-        
+
         <input
           type="text"
           placeholder="Search Transactions..."
@@ -138,6 +164,10 @@ class AccountContainer extends React.Component {
     )
   }
 }
+
+// <div>
+//   <DoughnutChart data={chartData} options={{percentageInnerCutout: 70, animationEasing: 'easeInOutQuart', labels: true}}/>
+// </div>
 
 const mapStateToProps = (state) => {
   return {
