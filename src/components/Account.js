@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import CountUp from 'react-countup'
-const LineChart = require("react-chartjs").Line
+import {Line} from 'react-chartjs-2';
 
 // import { bindActionCreators } from 'redux'
 
@@ -60,7 +60,9 @@ class Account extends React.Component {
         />
         </div>
 
-        <LineChart data={chartData} />
+        <Line data={chartData} options={{
+        		maintainAspectRatio: true
+        	}}/>
 
       </div>
     )
