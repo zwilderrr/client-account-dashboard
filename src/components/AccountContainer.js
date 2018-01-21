@@ -138,7 +138,7 @@ class AccountContainer extends React.Component {
   formatTooltipBalance = (tooltipItem, data) => {
     let index = tooltipItem.index
     let balance = data.datasets[0].data[index]
-    return numeral(balance).format('$0,0.00')
+    return `Balance: ${numeral(balance).format('$0,0.00')}`
   }
 
   getAccountName = (tooltipItem, data) => {

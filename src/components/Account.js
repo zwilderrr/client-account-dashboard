@@ -101,7 +101,8 @@ class Account extends React.Component {
   }
 
   getChartStyle = () => {
-    return (this.state.showChart) ? "animated fadeIn" : "none"
+    return ""
+    // return (this.state.showChart) ? "animated fadeIn" : "none"
   }
 
 
