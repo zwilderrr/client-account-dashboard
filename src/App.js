@@ -39,6 +39,7 @@ class App extends React.Component {
   }
 
   filterTransactions = (res, accountName) => {
+    //
     let transactions = []
     let runningBalance = 0
 
@@ -48,8 +49,8 @@ class App extends React.Component {
       let transFrom = transaction.transFrom.split(" Account")[0]
 
       if (this.isOfThisAccount(transaction, accountName, transTo, transFrom)) {
-        runningBalance += this.transactionAmt(transaction, accountName, transTo, transFrom)
-        transaction.runningBalance = runningBalance
+        runningBalance += (this.transactionAmt(transaction, accountName, transTo, transFrom) * 100)
+        transaction.runningBalance = (runningBalance / 100)
         transactions.unshift(transaction)
       }
     }

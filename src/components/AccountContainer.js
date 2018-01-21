@@ -5,6 +5,8 @@ import TransactionTable from './TransactionTable'
 import Account from './Account'
 import * as SettingsActions from '../actions/settings'
 import {Doughnut} from 'react-chartjs-2';
+const moment = require('moment')
+const numeral = require('numeral')
 
 
 class AccountContainer extends React.Component {
@@ -88,8 +90,6 @@ class AccountContainer extends React.Component {
   }
 
   getChartSettings = () => {
-
-
     const colors = [
       "rgba(52,152,219,.5)",
       "rgba(52,152,219,.5)",
@@ -97,7 +97,6 @@ class AccountContainer extends React.Component {
       "rgba(46,204,113,.45)",
     ]
     let colorIndex = 0
-
     let chartData = {
       labels: [],
       datasets: [
@@ -109,11 +108,17 @@ class AccountContainer extends React.Component {
         }
       ]
   	}
-
     let chartOptions = {
       cutoutPercentage: 80,
       maintainAspectRatio: true,
-      responsive: true
+      responsive: true,
+      tooltips: {
+        intersect: true,
+        callbacks: {
+          label: this.formatTooltipBalance,
+          title: this.getAccountName
+        }
+      },
     }
 
     this.props.allAccounts.forEach(accountName => {
@@ -128,6 +133,16 @@ class AccountContainer extends React.Component {
     })
 
     return [chartData, chartOptions]
+  }
+
+  formatTooltipBalance = (tooltipItem, data) => {
+    let index = tooltipItem.index
+    let balance = data.datasets[0].data[index]
+    return numeral(balance).format('$0,0.00')
+  }
+
+  getAccountName = (tooltipItem, data) => {
+    return data.labels[tooltipItem[0].index]
   }
 
 

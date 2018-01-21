@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import CountUp from 'react-countup'
 import {Line} from 'react-chartjs-2';
+const moment = require('moment')
+const numeral = require('numeral')
 
 // import { bindActionCreators } from 'redux'
 
@@ -29,22 +31,18 @@ class Account extends React.Component {
   getChartSettings = () => {
     let acctTrans = this.props.data.transactions
 
-    // let delta = Math.round(acctTrans.length / 5)
     let chartData = {
       labels: [],
       datasets: [
         {
-          label: "Balance over time",
-          fillColor: "rgba(46,204,113,.5)",
-          strokeColor: "#2ecc71",
-          highlightFill: "#2ecc71",
-          highlightStroke: "#2ecc71",
-          backgroundColor: "rgba(219, 52, 52, 0.5)",
-          borderColor: "transparent",
-          data: [
-            //balance
-          ],
-          fill: false,
+          label: "Balance",
+          backgroundColor: "rgba(219, 52, 52, 0.3)",
+          pointRadius: 0,
+          borderColor: "rgba(219, 52, 52, 0.7)",
+          data: [],
+          fill: true,
+          showLine: true,
+
         }
       ]
     }
@@ -52,31 +50,61 @@ class Account extends React.Component {
     let chartOptions = {
       title: {
         display: true,
-        text:'Chart.js Line Chart'
+        text:'Balance History'
       },
       tooltips: {
         mode: 'index',
         intersect: false,
+        callbacks: {
+          label: this.formatTooltipBalance,
+          title: this.formatTooltipTitle
+        }
       },
       maintainAspectRatio: true,
-      responsive: true
+      responsive: true,
+      legend: false,
+      scales: {
+        yAxes: [{
+          ticks: {
+            callback: (value) => numeral(value).format('$0,0')
+          }
+        }],
+        xAxes: [{
+          ticks: {
+            callback: (utc) => moment(utc).format('D/M/Y')
+          }
+        }]
+      }
 
     }
 
-    for (var i = 0; i < acctTrans.length; i++) {
-      chartData.labels.push(acctTrans[i].transTime)
-      chartData.datasets[0].data.push(acctTrans[i].runningBalance)
+    let numTrans = acctTrans.length
+    let delta = numTrans < 25 ? 1 : Math.ceil(numTrans / 25)
+    for (var i = 0; i < numTrans; i += delta) {
+      chartData.labels.unshift(acctTrans[i].transTime)
+      chartData.datasets[0].data.unshift(acctTrans[i].runningBalance)
 
     }
 
     return [chartData, chartOptions]
   }
 
+  formatTooltipBalance = (tooltipItem) => {
+    return numeral(tooltipItem.yLabel).format('$0,0.00')
+
+  }
+
+  formatTooltipTitle = (tooltipItem, data) => {
+    let index = tooltipItem[0].index
+    let utc = data.labels[index]
+    return moment(utc).format('ddd MMM Do, YYYY - h:mm:ss a')
+  }
+
+
   render() {
     const chartSettings = this.getChartSettings()
     const chartData = chartSettings[0]
     const chartOptions = chartSettings[1]
-    console.log(chartData);
 
     return(
       <div>
