@@ -155,7 +155,17 @@ class AccountContainer extends React.Component {
       <div>
         <h1>AccountContainer</h1>
 
+        <Doughnut onElementsClick={this.click} data={chartData} options={chartOptions}/>
 
+        {accounts}
+
+
+        <input
+          type="text"
+          placeholder="Search Transactions..."
+          value={this.state.searchInput}
+          onChange={this.handleSearchInput}
+        />
 
         <TransactionTable transactionData={transactionData}/>
 
@@ -164,17 +174,7 @@ class AccountContainer extends React.Component {
     )
   }
 }
-// <Doughnut onElementsClick={this.click} data={chartData} options={chartOptions}/>
-//
-// {accounts}
-//
-//
-// <input
-//   type="text"
-//   placeholder="Search Transactions..."
-//   value={this.state.searchInput}
-//   onChange={this.handleSearchInput}
-// />
+
 
 
 const mapStateToProps = (state) => {

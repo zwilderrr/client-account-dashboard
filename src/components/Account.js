@@ -14,13 +14,13 @@ class Account extends React.Component {
     super(props)
 
     this.state = {
-      showDetails: false
+      showChart: false
     }
   }
 
   setShowDetails = (boolean) => {
     this.setState({
-      showDetails: boolean
+      showChart: boolean
     })
   }
 
@@ -100,9 +100,14 @@ class Account extends React.Component {
     return moment(utc).format('ddd MMM Do, YYYY @ h:mm:ss a')
   }
 
+  getChartStyle = () => {
+    return (this.state.showChart) ? "animated fadeIn" : "none"
+  }
+
 
   render() {
     const chartSettings = this.getChartSettings()
+    const chartStyle = this.getChartStyle()
     const chartData = chartSettings[0]
     const chartOptions = chartSettings[1]
 
@@ -120,12 +125,14 @@ class Account extends React.Component {
         />
         </div>
 
-        <Line data={chartData} options={chartOptions}/>
+        <div className={chartStyle}>
+          <Line data={chartData} options={chartOptions} redraw/>
+        </div>
 
       </div>
     )
   }
 }
-// style={{display: this.state.showChart ? "in-line" : "none"}}
+
 
 export default connect(null, null)(Account)
