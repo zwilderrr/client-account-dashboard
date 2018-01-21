@@ -2,13 +2,41 @@ import React from 'react'
 import { connect } from 'react-redux'
 // import { bindActionCreators } from 'redux'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { Modal, Button } from 'react-bootstrap'
+import Transaction from './Transaction'
 const moment = require('moment')
 const numeral = require('numeral')
 
 
 class TransactionTable extends React.Component {
 
+  constructor(props){
+    super(props)
+    this.state = {
+      showModal: false,
+    }
+  }
 
+  handleModalClose = () => {
+    this.setState({
+      showModal: false
+    })
+  }
+
+  handleModalShow = (row) => {
+    this.setState({
+      showModal: true,
+      transactionDetails: row
+    })
+  }
+
+  getOptions = () => {
+    return {
+      onRowClick: (row) => {
+        this.handleModalShow(row)
+      }
+    }
+  }
 
   formatDate = (utc) => {
     return moment(utc).format('MMM Do, YYYY')
@@ -19,16 +47,31 @@ class TransactionTable extends React.Component {
   }
 
   render() {
+    const options = this.getOptions()
+
     return(
       <div>
         <h1>Transaction Table</h1>
-        <BootstrapTable data={this.props.transactionData} height={"40px"} striped hover>
-          <TableHeaderColumn isKey dataField='transTime' dataFormat={this.formatDate}>Date</TableHeaderColumn>
-          <TableHeaderColumn dataField='description'>Description</TableHeaderColumn>
-          <TableHeaderColumn dataField='transFrom'>Transfer From</TableHeaderColumn>
-          <TableHeaderColumn dataField='transTo'>Transfer To</TableHeaderColumn>
-          <TableHeaderColumn dataFormat={this.formatTransAmt} dataField='transAmt'>Amount</TableHeaderColumn>
+        <BootstrapTable data={this.props.transactionData} height={"40px"} options={options} striped hover responsive>
+          <TableHeaderColumn isKey dataSort dataField='transTime' dataFormat={this.formatDate}>Date</TableHeaderColumn>
+          <TableHeaderColumn dataSort dataField='description'>Description</TableHeaderColumn>
+          <TableHeaderColumn dataSort dataField='transFrom'>Transfer From</TableHeaderColumn>
+          <TableHeaderColumn dataSort dataField='transTo'>Transfer To</TableHeaderColumn>
+          <TableHeaderColumn dataSort dataFormat={this.formatTransAmt} dataField='transAmt'>Amount</TableHeaderColumn>
         </BootstrapTable>
+
+
+        <Modal show={this.state.showModal} onHide={this.handleModalClose} >
+					<Modal.Header closeButton>
+						<Modal.Title>Transaction Details</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+						<Transaction details={this.state.transactionDetails} />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.handleModalClose}>Close</Button>
+          </Modal.Footer>
+        </Modal>
 
       </div>
     )

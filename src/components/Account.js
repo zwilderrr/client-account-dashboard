@@ -97,7 +97,7 @@ class Account extends React.Component {
   formatTooltipTitle = (tooltipItem, data) => {
     let index = tooltipItem[0].index
     let utc = data.labels[index]
-    return moment(utc).format('ddd MMM Do, YYYY - h:mm:ss a')
+    return moment(utc).format('ddd MMM Do, YYYY @ h:mm:ss a')
   }
 
 
