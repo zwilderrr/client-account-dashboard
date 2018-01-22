@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux'
 import TransactionTable from './TransactionTable'
 import Account from './Account'
 import * as SettingsActions from '../actions/settings'
-import {Doughnut} from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
+import { Grid, Row, Col } from 'react-bootstrap'
 const moment = require('moment')
 const numeral = require('numeral')
 
@@ -26,17 +27,7 @@ class AccountContainer extends React.Component {
     })
   }
 
-  getAccounts = () => {
-    return this.props.allAccounts.map((accountName, index) =>
-      <Account
-        key={index}
-        data={this.props.transactionData[accountName]}
-        showAcctDetails={this.showAcctDetails}
-      />
-    )
-  }
-
-  showAcctDetails = (event, cb) => {
+  toggleAcctDetails = (event, cb) => {
     if (this.props.displayingAccountDetails) {
       //prevents two account details being open
       if (event.target.innerText === this.props.displayAccounts[0]) {
@@ -145,8 +136,23 @@ class AccountContainer extends React.Component {
     return data.labels[tooltipItem[0].index]
   }
 
+  getAccounts = () => {
+    return this.props.allAccounts.map((accountName, index) =>
+      <Account
+        key={index}
+        data={this.props.transactionData[accountName]}
+        toggleAcctDetails={this.toggleAcctDetails}
+      />
+    )
+  }
+  //
+  // componentDidMount() {
+  // 		console.log(this.refs.chart.chart_instance); // returns a Chart.js instance reference
+  // 	}
+
 
   render() {
+    console.log(this.refs);
     const transactionData = this.filterTransactions(this.props.displayAccounts)
     const accounts = this.getAccounts()
     const chartData = this.getChartSettings()[0]
@@ -155,21 +161,33 @@ class AccountContainer extends React.Component {
       <div>
         <h1>AccountContainer</h1>
 
-        <Doughnut onElementsClick={this.click} data={chartData} options={chartOptions}/>
+        <Grid fluid >
+          <Row className="grid-padding">
+          <h1>All accounts</h1>
+            <Col sm={5}>
+              <Doughnut ref='chart' data={chartData} options={chartOptions}/>
+            </Col>
 
-        {accounts}
+            <Col sm={7}>
+            </Col>
 
+          </Row>
+          
+          <Col sm={6}>
+            <input
+              type="text"
+              placeholder="Search Transactions..."
+              value={this.state.searchInput}
+              onChange={this.handleSearchInput}
+            />
 
-        <input
-          type="text"
-          placeholder="Search Transactions..."
-          value={this.state.searchInput}
-          onChange={this.handleSearchInput}
-        />
+            <TransactionTable transactionData={transactionData}/>
+          </Col>
+          <Col sm={6}>
+            {accounts}
+          </Col>
 
-        <TransactionTable transactionData={transactionData}/>
-
-
+        </Grid>
       </div>
     )
   }

@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import CountUp from 'react-countup'
 import {Line} from 'react-chartjs-2';
+import {Col} from 'react-bootstrap'
 const moment = require('moment')
 const numeral = require('numeral')
 
@@ -25,7 +26,7 @@ class Account extends React.Component {
   }
 
   toggleShowDetails = (event) => {
-    this.props.showAcctDetails(event, this.setShowDetails)
+    this.props.toggleAcctDetails(event, this.setShowDetails)
   }
 
   getChartSettings = () => {
@@ -101,8 +102,7 @@ class Account extends React.Component {
   }
 
   getChartStyle = () => {
-    return ""
-    // return (this.state.showChart) ? "animated fadeIn" : "none"
+    return (this.state.showChart) ? "animated fadeIn" : "none"
   }
 
 
@@ -114,6 +114,7 @@ class Account extends React.Component {
 
     return(
       <div>
+      <Col className="no-gutter">
         <h1 onClick={this.toggleShowDetails}>{this.props.data.accountName}</h1>
         <div>
         <CountUp start={0} end={this.props.data.balance}
@@ -130,6 +131,7 @@ class Account extends React.Component {
           <Line data={chartData} options={chartOptions} redraw/>
         </div>
 
+        </Col>
       </div>
     )
   }
