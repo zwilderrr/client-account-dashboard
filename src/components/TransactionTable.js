@@ -52,7 +52,7 @@ class TransactionTable extends React.Component {
     return(
       <div>
       <div>
-        <h1>Transaction Table</h1>
+        <h3>Transaction Table</h3>
         <BootstrapTable width={30} data={this.props.transactionData} options={options} striped hover responsive>
           <TableHeaderColumn isKey dataSort dataField='transTime' dataFormat={this.formatDate}>Date</TableHeaderColumn>
           <TableHeaderColumn dataSort dataField='description'>Description</TableHeaderColumn>

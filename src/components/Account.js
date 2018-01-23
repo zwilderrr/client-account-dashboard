@@ -44,8 +44,10 @@ class Account extends React.Component {
       "rgba(196, 204, 46, 0.3)",
       "rgba(196, 204, 46, 0.7)",
     ]
-    let colorIndex = 0
-    console.log(this.props.hey);
+    let colorIndex = this.props.colorIndex + 1
+    if (this.props.colorIndex === 0) {
+      colorIndex = 0
+    }
 
     // let colorIndex = this.props.colorIndex
     //colorIndex should be set to the index + 1 of the acctName in allAccounts (exept if it's zero, in which case colorIndex should equal 0)
@@ -102,13 +104,12 @@ class Account extends React.Component {
     let delta = numTrans < 30 ? 1 : Math.ceil(numTrans / 30)
     for (var i = 0; i < numTrans; i += delta) {
       if (colorIndex >= colors.length - 1) {
-        colorIndex = 1
+        colorIndex = 0
       }
       chartData.labels.push(acctTrans[i].transTime)
       chartData.datasets[0].data.push(acctTrans[i].runningBalance)
       chartData.datasets.backgroundColor = colors[colorIndex]
       chartData.datasets.borderColor = colors[colorIndex + 1]
-      colorIndex += 2
     }
 
     return [chartData, chartOptions]
@@ -136,13 +137,12 @@ class Account extends React.Component {
     const chartData = chartSettings[0]
     const chartOptions = chartSettings[1]
     const showLineChart = this.state.showChart ? "" : "none"
-    console.log("accounts render");
 
     return(
-      <div >
-        <h1 onClick={this.toggleShowDetails}>{this.props.data.accountName}</h1>
+      <div onClick={this.toggleShowDetails} className="account">
+        <h2 >{this.props.data.accountName}</h2>
         <div>
-        <CountUp start={0} end={this.props.data.balance}
+        <CountUp className="count-up" start={0} end={this.props.data.balance}
           duration={1.5}
           useGrouping={true}
           separator={","}

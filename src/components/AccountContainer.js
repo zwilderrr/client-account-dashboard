@@ -28,13 +28,12 @@ class AccountContainer extends React.Component {
   }
 
   getAccounts = () => {
-    console.log("getAccounts");
     return this.props.allAccounts.map((accountName, index) =>
       <Account
         key={index}
         data={this.props.transactionData[accountName]}
         toggleAcctDetails={this.toggleAcctDetails}
-        hey={"hey"}
+        colorIndex={index}
       />
     )
   }
@@ -43,7 +42,6 @@ class AccountContainer extends React.Component {
     let account = event.target.innerText
     let displayAccounts = this.props.displayAccounts
     let allAccounts = this.props.allAccounts
-    console.log(account, showing);
 
     if (!showing) {
       this.removeFromDispAccts(account, displayAccounts, allAccounts)
@@ -119,9 +117,9 @@ class AccountContainer extends React.Component {
       datasets: [
         {
           label: "Balance",
-          backgroundColor: "rgba(232, 132, 0, 0.3)",
+          backgroundColor: "rgba(33, 163, 0, 0.42)",
           pointRadius: 0,
-          borderColor: "rgba(232, 132, 0, 0.7)",
+          borderColor: "rgba(33, 163, 0, 0.5)",
           data: [],
           fill: true,
           showLine: true,
@@ -248,53 +246,47 @@ class AccountContainer extends React.Component {
 
   render() {
     const transactionData = this.filterTransactions(this.props.displayAccounts)
-    console.log("render");
     const accounts = this.getAccounts()
-    console.log("render after get accounts");
     const doughnutChartData = this.getDoughnutChartSettings()[0]
     const doughnutChartOptions = this.getDoughnutChartSettings()[1]
     const lineChartData = this.getLineChartSettings()[0]
     const lineChartOptions = this.getLineChartSettings()[1]
 
-    console.log(this.props.displayAccounts);
-
     return(
       <div>
         <Grid fluid>
           <Row className="grid-padding">
-          <h1>All accounts</h1>
+          <h3>All accounts</h3>
             <Row>
               <Col className="dash-item" sm={4}>
-                <Doughnut width={142} data={doughnutChartData} options={doughnutChartOptions}/>
+                <Doughnut width={145} data={doughnutChartData} options={doughnutChartOptions}/>
               </Col>
 
               <Col className="dash-item" sm={8}>
-              <div>
                 <Line data={lineChartData} options={lineChartOptions} />
-              </div>
               </Col>
             </Row>
 
 
             <Row className="dash-item">
-            <div className="search-box">
-              <input
-              className="search"
-              type="text"
-              placeholder="Search Transactions..."
-              value={this.state.searchInput}
-              onChange={this.handleSearchInput}
-              />
-            </div>
+              <div className="search-box">
+                <input
+                className="search"
+                type="text"
+                placeholder="Search Transactions..."
+                value={this.state.searchInput}
+                onChange={this.handleSearchInput}
+                />
+              </div>
             </Row>
 
-            <Row  >
+            <Row >
               <Col className="dash-item" sm={6}>
                 <TransactionTable transactionData={transactionData}/>
               </Col>
 
               <Col className="dash-item" sm={6}>
-                <h1>Accounts</h1>
+                <h3>Accounts</h3>
                 {accounts}
               </Col>
             </Row>
