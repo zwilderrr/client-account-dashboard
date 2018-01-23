@@ -6,9 +6,6 @@ import {Col} from 'react-bootstrap'
 const moment = require('moment')
 const numeral = require('numeral')
 
-// import { bindActionCreators } from 'redux'
-
-
 class Account extends React.Component {
 
   constructor(props) {
@@ -26,10 +23,10 @@ class Account extends React.Component {
   }
 
   toggleShowDetails = (event) => {
-    let showing = this.state.showChart
+    let showing = this.state.showChart ? false : true
     this.props.toggleAcctDetails(event, showing)
     this.setState({
-      showChart: showing ? false : true
+      showChart: showing
     })
   }
 
@@ -48,6 +45,9 @@ class Account extends React.Component {
       "rgba(196, 204, 46, 0.7)",
     ]
     let colorIndex = 0
+    console.log(this.props.hey);
+
+    // let colorIndex = this.props.colorIndex
     //colorIndex should be set to the index + 1 of the acctName in allAccounts (exept if it's zero, in which case colorIndex should equal 0)
     //currently not passing in props correctly
 
@@ -135,6 +135,8 @@ class Account extends React.Component {
     const chartStyle = this.getChartStyle()
     const chartData = chartSettings[0]
     const chartOptions = chartSettings[1]
+    const showLineChart = this.state.showChart ? "" : "none"
+    console.log("accounts render");
 
     return(
       <div >
@@ -150,7 +152,9 @@ class Account extends React.Component {
         />
         </div>
 
-        <Line data={chartData} options={chartOptions} redraw/>
+        <div className={showLineChart}>
+          <Line data={chartData} options={chartOptions} redraw/>
+        </div>
 
       </div>
     )

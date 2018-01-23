@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import DashboardContainer from './components/DashboardContainer'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import * as DataActions from './actions/data'
 import * as SettingsActions from './actions/settings'
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css'
+
 
 
 class App extends React.Component {
@@ -100,8 +100,10 @@ class App extends React.Component {
   setDisplay = () => {
     if (this.props.dataLoaded) {
       return (
-        <div>
+        <div className="animated fadeIn">
+          <Header />
           <DashboardContainer />
+          <Footer />
         </div>
       )
     } else {
@@ -117,7 +119,6 @@ class App extends React.Component {
   render() {
     return (
       <div className="background">
-        <Header />
         {this.setDisplay()}
       </div>
     )

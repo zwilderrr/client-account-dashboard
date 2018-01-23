@@ -28,22 +28,24 @@ class AccountContainer extends React.Component {
   }
 
   getAccounts = () => {
+    console.log("getAccounts");
     return this.props.allAccounts.map((accountName, index) =>
       <Account
         key={index}
         data={this.props.transactionData[accountName]}
         toggleAcctDetails={this.toggleAcctDetails}
+        hey={"hey"}
       />
     )
   }
 
   toggleAcctDetails = (event, showing) => {
-    console.log(showing);
     let account = event.target.innerText
     let displayAccounts = this.props.displayAccounts
     let allAccounts = this.props.allAccounts
+    console.log(account, showing);
 
-    if (showing) {
+    if (!showing) {
       this.removeFromDispAccts(account, displayAccounts, allAccounts)
     } else {
       this.addToDispAccts(account, displayAccounts, allAccounts)
@@ -51,12 +53,7 @@ class AccountContainer extends React.Component {
   }
 
   removeFromDispAccts = (account, displayAccounts, allAccounts) => {
-    if (displayAccounts.length === 1) {
-      this.props.settings.setDisplayAccounts(allAccounts)
-      return
-    }
-
-    //maintains same order
+        //maintains same order
     let newDisplay = []
     allAccounts.forEach(el => {
       if (displayAccounts.includes(el) && el !== account) {
@@ -248,27 +245,19 @@ class AccountContainer extends React.Component {
     return data.labels[tooltipItem[0].index]
   }
 
-  getAccounts = () => {
-    return this.props.allAccounts.map((accountName, index) =>
-      <Account
-        key={index}
-        data={this.props.transactionData[accountName]}
-        toggleAcctDetails={this.toggleAcctDetails}
-      />
-    )
-  }
-
-
 
   render() {
     const transactionData = this.filterTransactions(this.props.displayAccounts)
+    console.log("render");
     const accounts = this.getAccounts()
+    console.log("render after get accounts");
     const doughnutChartData = this.getDoughnutChartSettings()[0]
     const doughnutChartOptions = this.getDoughnutChartSettings()[1]
     const lineChartData = this.getLineChartSettings()[0]
     const lineChartOptions = this.getLineChartSettings()[1]
 
-        console.log(this.props.displayAccounts);
+    console.log(this.props.displayAccounts);
+
     return(
       <div>
         <Grid fluid>
@@ -276,11 +265,13 @@ class AccountContainer extends React.Component {
           <h1>All accounts</h1>
             <Row>
               <Col className="dash-item" sm={4}>
-                <Doughnut height={250} data={doughnutChartData} options={doughnutChartOptions}/>
+                <Doughnut width={142} data={doughnutChartData} options={doughnutChartOptions}/>
               </Col>
 
               <Col className="dash-item" sm={8}>
+              <div>
                 <Line data={lineChartData} options={lineChartOptions} />
+              </div>
               </Col>
             </Row>
 
