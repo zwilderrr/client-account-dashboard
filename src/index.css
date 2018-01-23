@@ -1,4 +1,4 @@
-  body {
+body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
@@ -7,15 +7,21 @@
 h3 {
   text-align: center;
 }
+input {
+  border-style: none;
+  border-color: lightgrey;
+  border-radius: 5px
+}
+
 
 input:focus {
   outline: 0
 }
+
 .background {
   background-color: rgba(0, 0, 0, 0.03);
   color: rgba(0, 0, 0, 0.6)
 }
-
 
 .grid-padding {
   padding-left: 5%;
@@ -31,23 +37,14 @@ input:focus {
   margin-bottom: .5em
 }
 
-.stripe {
-  background: rgba(255, 228, 45, 0.52);
-  padding: 2%;
-  text-align: right
-}
-
-.footer {
-  margin-top: 10px
-}
-
 .account {
   background: rgba(255, 0, 0, 0.07);
   padding-left: 1.5em;
   margin-bottom: .5em;
   border-style: solid;
   border-radius: 10px;
-  border-color: white
+  border-color: white;
+  cursor: hand
 }
 
 .line-chart {
@@ -60,7 +57,8 @@ input:focus {
 }
 
 .table {
-  margin-bottom: 10px
+  margin-bottom: 10px;
+  cursor: hand
 }
 
 .count-up {
@@ -82,12 +80,14 @@ input:focus {
   transform: translate(-50%, -50%)
 }
 
-input {
-  padding-left: 10em;
-  padding-right: 10em;
-  border-style: none;
-  border-color: lightgrey;
-  border-radius: 5px
+.stripe {
+  background: rgba(255, 228, 45, 0.52);
+  padding: 2%;
+  text-align: right
+}
+
+.footer {
+  margin-top: 10px
 }
 
 .none {

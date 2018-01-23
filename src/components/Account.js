@@ -1,7 +1,6 @@
 import React from 'react'
 import CountUp from 'react-countup'
 import { Line } from 'react-chartjs-2';
-import { Col } from 'react-bootstrap'
 const moment = require('moment')
 const numeral = require('numeral')
 
@@ -112,13 +111,8 @@ class Account extends React.Component {
     return moment(utc).format('ddd MMM Do, YYYY @ h:mm:ss a')
   }
 
-  getChartStyle = () => {
-    return (this.state.showChart) ? "animated fadeIn" : "none"
-  }
-
   render() {
     const chartSettings = this.getChartSettings()
-    const chartStyle = this.getChartStyle()
     const chartData = chartSettings[0]
     const chartOptions = chartSettings[1]
     const showLineChart = this.state.showChart ? "" : "none"
@@ -138,7 +132,7 @@ class Account extends React.Component {
         </div>
 
         <div className={`${showLineChart} line-chart`}>
-          <Line data={chartData} options={chartOptions} redraw/>
+          <Line data={chartData} options={chartOptions} redraw />
         </div>
       </div>
     )

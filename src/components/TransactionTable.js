@@ -1,6 +1,6 @@
 import React from 'react'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { Modal, Button, Row } from 'react-bootstrap'
+import { Modal, Button } from 'react-bootstrap'
 
 import Transaction from './Transaction'
 const moment = require('moment')
