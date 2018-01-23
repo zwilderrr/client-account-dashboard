@@ -5,6 +5,8 @@ import DashboardContainer from './components/DashboardContainer'
 import Header from './components/Header'
 import * as DataActions from './actions/data'
 import * as SettingsActions from './actions/settings'
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap-theme.css'
 
 
 class App extends React.Component {
@@ -114,7 +116,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="background">
         <Header />
         {this.setDisplay()}
       </div>

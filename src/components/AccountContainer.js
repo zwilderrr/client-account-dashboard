@@ -272,34 +272,37 @@ class AccountContainer extends React.Component {
     return(
       <div>
         <Grid fluid>
-          <Row  className="grid-padding">
+          <Row className="grid-padding">
+          <h1>All accounts</h1>
             <Row>
-            <h1>All accounts</h1>
-              <Col sm={4}>
-                <Doughnut width={150} data={doughnutChartData} options={doughnutChartOptions}/>
+              <Col className="dash-item" sm={4}>
+                <Doughnut height={250} data={doughnutChartData} options={doughnutChartOptions}/>
               </Col>
 
-              <Col sm={8}>
+              <Col className="dash-item" sm={8}>
                 <Line data={lineChartData} options={lineChartOptions} />
               </Col>
             </Row>
 
 
-            <Row>
+            <Row className="dash-item">
+            <div className="search-box">
               <input
+              className="search"
               type="text"
               placeholder="Search Transactions..."
               value={this.state.searchInput}
               onChange={this.handleSearchInput}
               />
+            </div>
             </Row>
 
-            <Row>
-              <Col sm={6}>
+            <Row  >
+              <Col className="dash-item" sm={6}>
                 <TransactionTable transactionData={transactionData}/>
               </Col>
 
-              <Col sm={6}>
+              <Col className="dash-item" sm={6}>
                 <h1>Accounts</h1>
                 {accounts}
               </Col>

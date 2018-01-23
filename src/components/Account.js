@@ -35,15 +35,30 @@ class Account extends React.Component {
 
   getChartSettings = () => {
     let acctTrans = this.props.data.transactions
+    const colors = [
+      "rgba(52,152,219,.3)",
+      "rgba(52,152,219,.7)",
+      "rgba(46,204,113,.3)",
+      "rgba(46,204,113,.7)",
+      "rgba(49, 46, 204, 0.3)",
+      "rgba(49, 46, 204, 0.7)",
+      "rgba(204, 46, 202, 0.3)",
+      "rgba(204, 46, 202, 0.7)",
+      "rgba(196, 204, 46, 0.3)",
+      "rgba(196, 204, 46, 0.7)",
+    ]
+    let colorIndex = 0
+    //colorIndex should be set to the index + 1 of the acctName in allAccounts (exept if it's zero, in which case colorIndex should equal 0)
+    //currently not passing in props correctly
 
     let chartData = {
       labels: [],
       datasets: [
         {
           label: "Balance",
-          backgroundColor: "rgba(219, 52, 52, 0.3)",
+          backgroundColor: "rgba(52,152,219,.3)",
           pointRadius: 0,
-          borderColor: "rgba(219, 52, 52, 0.7)",
+          borderColor: "rgba(52,152,219,.3)",
           data: [],
           fill: true,
           showLine: true,
@@ -86,9 +101,14 @@ class Account extends React.Component {
     let numTrans = acctTrans.length
     let delta = numTrans < 30 ? 1 : Math.ceil(numTrans / 30)
     for (var i = 0; i < numTrans; i += delta) {
+      if (colorIndex >= colors.length - 1) {
+        colorIndex = 1
+      }
       chartData.labels.push(acctTrans[i].transTime)
       chartData.datasets[0].data.push(acctTrans[i].runningBalance)
-
+      chartData.datasets.backgroundColor = colors[colorIndex]
+      chartData.datasets.borderColor = colors[colorIndex + 1]
+      colorIndex += 2
     }
 
     return [chartData, chartOptions]
@@ -117,7 +137,7 @@ class Account extends React.Component {
     const chartOptions = chartSettings[1]
 
     return(
-      <div>
+      <div >
         <h1 onClick={this.toggleShowDetails}>{this.props.data.accountName}</h1>
         <div>
         <CountUp start={0} end={this.props.data.balance}
@@ -130,9 +150,8 @@ class Account extends React.Component {
         />
         </div>
 
-        <div className={chartStyle}>
-          <Line data={chartData} options={chartOptions} redraw/>
-        </div>
+        <Line data={chartData} options={chartOptions} redraw/>
+
       </div>
     )
   }
