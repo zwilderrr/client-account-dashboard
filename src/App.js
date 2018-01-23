@@ -8,74 +8,88 @@ import * as SettingsActions from './actions/settings'
 class App extends React.Component {
 
   componentDidMount = () => {
-    let custAccounts = ["Checking", "Savings"]
     let custId = 0
-    this.props.settings.setAllAccounts(custAccounts)
     this.props.data.getTransactionData(custId, this.parseCustData)
   }
 
   parseCustData = (res) => {
-    //this assumes each account has a different name/identifyer
-    let allAccounts = this.props.allAccounts
-    let parsedData = allAccounts.map(accountName => {
-      let transactions = this.filterTransactions(res, accountName)
-      let balance = transactions[0].runningBalance
-      return {
-        accountName: accountName,
-        transactions,
-        balance: balance
-      }
-    })
+    //a list of customer accounts would be retrieved from the api call
+    let custAccounts = ["Checking", "Savings"]
+    this.props.settings.setAllAccounts(custAccounts)
 
-    //adds an O(n) calculation but makes for O(1) account access
-    const dataObj = {}
-    parsedData.forEach(account => {
-      dataObj[account.accountName] = account
-    })
-
-    this.props.data.setTransactionData(dataObj)
-    // without making obj
-    // this.props.data.setTransactionData(parsedData)
-  }
-
-  filterTransactions = (res, accountName) => {
-    //
-    let transactions = []
-    let runningBalance = 0
+    let parsedData = this.makeParsedDataSkeleton()
 
     for (let i = res.length - 1; i >= 0; i--) {
       let transaction = res[i]
       let transTo = transaction.transTo.split(" Account")[0]
       let transFrom = transaction.transFrom.split(" Account")[0]
-
-      if (this.isOfThisAccount(transaction, accountName, transTo, transFrom)) {
-        runningBalance += (this.transactionAmt(transaction, accountName, transTo, transFrom) * 100)
-        if (transaction.runningBalance) {
-          //it's already processed (ie an internal transaction) and tf already has a runningBalance associated with it
-          let transDup = JSON.parse(JSON.stringify(transaction))
-          transDup.runningBalance = (runningBalance / 100)
-          transactions.unshift(transaction)
-        } else {
-          transaction.runningBalance = (runningBalance / 100)
-          transactions.unshift(transaction)
-        }
+      let runningBalance = "runningBalance"
+      let allAcctsRecord = {
+        transId: transaction.transId,
+        transTime: transaction.transTime,
+        transAmt: 0
       }
+
+      if (this.isInternalTransaction(transTo, transFrom)) {
+        this.updateWithInternalTrans(transTo, transFrom, transaction, parsedData, runningBalance)
+      } else {
+        this.updateWithExternalTrans(transTo, transFrom, transaction, parsedData, runningBalance)
+        allAcctsRecord.transAmt = transaction.transAmt
+        parsedData.allAccounts.balance += transaction.transAmt
+      }
+      allAcctsRecord[runningBalance] = parsedData.allAccounts.balance
+      parsedData.allAccounts.transactions.push(allAcctsRecord)
     }
-    return transactions
+    
+    this.props.data.setTransactionData(parsedData)
   }
 
-  transactionAmt = (transaction, accountName, transTo, transFrom) => {
-    if (this.props.allAccounts.includes(transTo) && this.props.allAccounts.includes(transFrom)) {
-      //"negitive value" coming into the account
-      if (transTo === accountName) {
-        return -transaction.transAmt
+  makeParsedDataSkeleton = () => {
+    let skeleton = {
+      allAccounts: {
+        balance: 0,
+        transactions: []
       }
     }
-    return transaction.transAmt
+
+    this.props.allAccounts.forEach(acct => {
+      skeleton[acct] = {
+        balance: 0,
+        transactions: []
+      }
+    })
+
+    return skeleton
   }
 
-  isOfThisAccount = (transaction, accountName, transTo, transFrom) => {
-    return (accountName.includes(transTo) || accountName.includes(transFrom))
+  isInternalTransaction = (transTo, transFrom) => {
+    return (this.props.allAccounts.includes(transTo) &&
+    this.props.allAccounts.includes(transFrom))
+  }
+
+  updateWithInternalTrans = (transTo, transFrom, transaction, parsedData, runningBalance) => {
+    let dupedTrans = JSON.parse(JSON.stringify(transaction))
+
+    parsedData[transFrom].balance += transaction.transAmt
+    parsedData[transTo].balance -= transaction.transAmt
+
+    parsedData[transFrom].transactions.push(transaction)
+    parsedData[transTo].transactions.push(dupedTrans)
+
+    transaction[runningBalance] = parsedData[transFrom].balance
+    dupedTrans[runningBalance] = parsedData[transTo].balance
+  }
+
+  updateWithExternalTrans = (transTo, transFrom, transaction, parsedData, runningBalance) => {
+    if (transaction.transAmt < 0) {
+      parsedData[transFrom].balance += transaction.transAmt
+      transaction[runningBalance] = parsedData[transFrom].balance
+      parsedData[transFrom].transactions.push(transaction)
+    } else {
+      parsedData[transTo].balance += transaction.transAmt
+      transaction[runningBalance] = parsedData[transTo].balance
+      parsedData[transTo].transactions.push(transaction)
+    }
   }
 
   setDisplay = () => {
@@ -97,7 +111,7 @@ class App extends React.Component {
 
 
   render() {
-    console.log(this.props.transactionData);
+    console.log("transactionData", this.props.transactionData);
     return (
       this.setDisplay()
     )

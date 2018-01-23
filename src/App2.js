@@ -8,71 +8,74 @@ import * as SettingsActions from './actions/settings'
 class App extends React.Component {
 
   componentDidMount = () => {
+    let custAccounts = ["Checking", "Savings"]
     let custId = 0
+    this.props.settings.setAllAccounts(custAccounts)
     this.props.data.getTransactionData(custId, this.parseCustData)
   }
 
   parseCustData = (res) => {
-    let allAcctsBalance = 0
-    let parsedData = {
-      custAccountNames: custAccounts,
-      allAcctsTrans: []
-    }
-    //custAccounts would be something like res.custAcctNames
-    let custAccounts = ["Checking", "Savings"]
-    this.props.settings.setAllAccounts(custAccounts)
-
-    custAccounts.forEach(account => {
-      parsedData.account: {
-        runningBalance: 0,
-        transactions: []
+    //this assumes each account has a different name/identifyer
+    let allAccounts = this.props.allAccounts
+    let parsedData = allAccounts.map(accountName => {
+      let transactions = this.filterTransactions(res, accountName)
+      let balance = transactions[0].runningBalance
+      return {
+        accountName: accountName,
+        transactions,
+        balance: balance
       }
     })
 
+    //adds an O(n) calculation but makes for O(1) account access
+    const dataObj = {}
+    parsedData.forEach(account => {
+      dataObj[account.accountName] = account
+    })
 
+    this.props.data.setTransactionData(dataObj)
+    // without making obj
+    // this.props.data.setTransactionData(parsedData)
+  }
 
-    for (var i = res.length - 1; i >= 0; i--) {
+  filterTransactions = (res, accountName) => {
+    //
+    let transactions = []
+    let runningBalance = 0
+
+    for (let i = res.length - 1; i >= 0; i--) {
       let transaction = res[i]
       let transTo = transaction.transTo.split(" Account")[0]
       let transFrom = transaction.transFrom.split(" Account")[0]
 
-      if (this.isInternalTransaction(transaction, transTo, transFrom)) {
-        transaction["allAcctsBalance"] = allAcctsBalance
-      } else {
-
-        //is money going in?
-          //what's the running balance?
-      }
-      allAcctsBalance += transaction.transAmt
-      transaction["allAcctsBalance"] = allAcctsBalance
-
-      //determines whether transTo or transFrom is a customer acct
-      if this.props.allAccounts.includes(transTo) {
-        if (!parsedData[transTo]) {
-          parsedData[transTo] = []
+      if (this.isOfThisAccount(transaction, accountName, transTo, transFrom)) {
+        runningBalance += (this.transactionAmt(transaction, accountName, transTo, transFrom) * 100)
+        if (transaction.runningBalance) {
+          //it's already processed (ie an internal transaction) and tf already has a runningBalance associated with it
+          let transDup = JSON.parse(JSON.stringify(transaction))
+          transDup.runningBalance = (runningBalance / 100)
+          transactions.unshift(transaction)
+        } else {
+          transaction.runningBalance = (runningBalance / 100)
+          transactions.unshift(transaction)
         }
-        parsedData[transTo].unshift(transaction)
-      } else {
-        if (!parsedData[transFrom]) {
-          parsedData[transFrom] = []
-        }
-        parsedData[transFrom].unshift(transaction)
       }
-
-      runningBalance += transaction.transAmt
-      transaction.runningBalance = runningBalance
-
-
-      allAcctsTrans.unshift(transaction)
     }
+    return transactions
   }
 
-  transferIn = (transTo, transFrom) => {
-    return this.props.allAccounts.includes(transTo)
+  transactionAmt = (transaction, accountName, transTo, transFrom) => {
+    if (this.props.allAccounts.includes(transTo) && this.props.allAccounts.includes(transFrom)) {
+      //"negitive value" coming into the account
+      if (transTo === accountName) {
+        return -transaction.transAmt
+      }
+    }
+    return transaction.transAmt
   }
 
-  isInternalTransaction = (transaction, transTo, transFrom) => {
-    return (this.props.allAccounts.includes(transTo) || this.props.allAccounts.includes(transFrom))
+  isOfThisAccount = (transaction, accountName, transTo, transFrom) => {
+    return (accountName.includes(transTo) || accountName.includes(transFrom))
   }
 
   setDisplay = () => {
