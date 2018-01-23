@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 // import { bindActionCreators } from 'redux'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { Modal, Button } from 'react-bootstrap'
+import { Modal, Button, Row } from 'react-bootstrap'
 import Transaction from './Transaction'
 const moment = require('moment')
 const numeral = require('numeral')
@@ -51,14 +51,16 @@ class TransactionTable extends React.Component {
 
     return(
       <div>
+      <div>
         <h1>Transaction Table</h1>
-        <BootstrapTable data={this.props.transactionData} height={"40px"} options={options} striped hover responsive>
+        <BootstrapTable width={30} data={this.props.transactionData} options={options} striped hover responsive>
           <TableHeaderColumn isKey dataSort dataField='transTime' dataFormat={this.formatDate}>Date</TableHeaderColumn>
           <TableHeaderColumn dataSort dataField='description'>Description</TableHeaderColumn>
           <TableHeaderColumn dataSort dataField='transFrom'>Transfer From</TableHeaderColumn>
           <TableHeaderColumn dataSort dataField='transTo'>Transfer To</TableHeaderColumn>
           <TableHeaderColumn dataSort dataFormat={this.formatTransAmt} dataField='transAmt'>Amount</TableHeaderColumn>
         </BootstrapTable>
+      </div>
 
 
         <Modal show={this.state.showModal} onHide={this.handleModalClose} >

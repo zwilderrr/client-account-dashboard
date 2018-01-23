@@ -118,7 +118,6 @@ class Account extends React.Component {
 
     return(
       <div>
-      <Col className="no-gutter">
         <h1 onClick={this.toggleShowDetails}>{this.props.data.accountName}</h1>
         <div>
         <CountUp start={0} end={this.props.data.balance}
@@ -134,8 +133,6 @@ class Account extends React.Component {
         <div className={chartStyle}>
           <Line data={chartData} options={chartOptions} redraw/>
         </div>
-
-        </Col>
       </div>
     )
   }

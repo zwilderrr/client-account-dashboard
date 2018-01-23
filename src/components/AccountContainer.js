@@ -38,6 +38,7 @@ class AccountContainer extends React.Component {
   }
 
   toggleAcctDetails = (event, showing) => {
+    console.log(showing);
     let account = event.target.innerText
     let displayAccounts = this.props.displayAccounts
     let allAccounts = this.props.allAccounts
@@ -266,38 +267,48 @@ class AccountContainer extends React.Component {
     const doughnutChartOptions = this.getDoughnutChartSettings()[1]
     const lineChartData = this.getLineChartSettings()[0]
     const lineChartOptions = this.getLineChartSettings()[1]
+
+        console.log(this.props.displayAccounts);
     return(
       <div>
-        <h1>AccountContainer</h1>
+        <Grid fluid>
+          <Row  className="grid-padding">
+            <Row>
+            <h1>All accounts</h1>
+              <Col sm={4}>
+                <Doughnut width={150} data={doughnutChartData} options={doughnutChartOptions}/>
+              </Col>
 
-        <Grid fluid >
-          <Row className="grid-padding">
-          <h1>All accounts</h1>
-            <Col sm={5}>
-              <Doughnut width={200} data={doughnutChartData} options={doughnutChartOptions}/>
-            </Col>
+              <Col sm={8}>
+                <Line data={lineChartData} options={lineChartOptions} />
+              </Col>
+            </Row>
 
-            <Col sm={7}>
-              <Line data={lineChartData} options={lineChartOptions} />
-            </Col>
 
-          </Row>
-
-          <Col sm={6}>
-            <input
+            <Row>
+              <input
               type="text"
               placeholder="Search Transactions..."
               value={this.state.searchInput}
               onChange={this.handleSearchInput}
-            />
+              />
+            </Row>
 
-            <TransactionTable transactionData={transactionData}/>
-          </Col>
-          <Col sm={6}>
-            {accounts}
-          </Col>
+            <Row>
+              <Col sm={6}>
+                <TransactionTable transactionData={transactionData}/>
+              </Col>
 
+              <Col sm={6}>
+                <h1>Accounts</h1>
+                {accounts}
+              </Col>
+            </Row>
+          </Row>
         </Grid>
+
+
+
       </div>
     )
   }

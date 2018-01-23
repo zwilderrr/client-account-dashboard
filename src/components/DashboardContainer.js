@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 // import { bindActionCreators } from 'redux'
 import AccountContainer from './AccountContainer'
+import Footer from './Footer'
 
 class DashboardContainer extends React.Component {
 
@@ -10,8 +11,8 @@ class DashboardContainer extends React.Component {
     return(
 
       <div>
-        <h1>DashboardContainer</h1>
         <AccountContainer />
+        <Footer />
       </div>
     )
   }

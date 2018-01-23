@@ -2,8 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import DashboardContainer from './components/DashboardContainer'
+import Header from './components/Header'
 import * as DataActions from './actions/data'
 import * as SettingsActions from './actions/settings'
+
 
 class App extends React.Component {
 
@@ -97,7 +99,6 @@ class App extends React.Component {
     if (this.props.dataLoaded) {
       return (
         <div>
-          <h1>App</h1>
           <DashboardContainer />
         </div>
       )
@@ -112,9 +113,11 @@ class App extends React.Component {
 
 
   render() {
-    console.log("transactionData", this.props.transactionData);
     return (
-      this.setDisplay()
+      <div>
+        <Header />
+        {this.setDisplay()}
+      </div>
     )
   }
 }
