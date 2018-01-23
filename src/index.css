@@ -41,6 +41,10 @@
   border-color: white
 }
 
+.line-chart {
+  margin-right: 1.5em;
+}
+
 .account:hover {
   background: rgba(255, 0, 0, 0.1);
 

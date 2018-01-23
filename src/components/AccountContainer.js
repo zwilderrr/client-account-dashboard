@@ -117,7 +117,7 @@ class AccountContainer extends React.Component {
       datasets: [
         {
           label: "Balance",
-          backgroundColor: "rgba(33, 163, 0, 0.42)",
+          backgroundColor: "rgba(33, 163, 0, 0.31)",
           pointRadius: 0,
           borderColor: "rgba(33, 163, 0, 0.5)",
           data: [],

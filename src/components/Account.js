@@ -60,9 +60,9 @@ class Account extends React.Component {
           label: "Balance",
           backgroundColor: "rgba(52,152,219,.3)",
           pointRadius: 0,
-          borderColor: "rgba(52,152,219,.3)",
+          borderColor: "rgba(52, 152, 219, 0.52)",
           data: [],
-          fill: true,
+          fill: false,
           showLine: true,
 
         }
@@ -152,7 +152,7 @@ class Account extends React.Component {
         />
         </div>
 
-        <div className={showLineChart}>
+        <div className={`${showLineChart} line-chart`}>
           <Line data={chartData} options={chartOptions} redraw/>
         </div>
 
