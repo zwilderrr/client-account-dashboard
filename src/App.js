@@ -13,7 +13,7 @@ class App extends React.Component {
   }
 
   parseCustData = (res) => {
-    //a list of customer accounts would be retrieved from the api call
+    //a list of customer accounts would be retrieved from the api call in the proper order
     let custAccounts = ["Checking", "Savings"]
     this.props.settings.setAllAccounts(custAccounts)
 
@@ -40,7 +40,7 @@ class App extends React.Component {
       allAcctsRecord[runningBalance] = parsedData.allAccounts.balance
       parsedData.allAccounts.transactions.push(allAcctsRecord)
     }
-    
+
     this.props.data.setTransactionData(parsedData)
   }
 
@@ -54,6 +54,7 @@ class App extends React.Component {
 
     this.props.allAccounts.forEach(acct => {
       skeleton[acct] = {
+        accountName: acct,
         balance: 0,
         transactions: []
       }

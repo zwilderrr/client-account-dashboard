@@ -26,7 +26,11 @@ class Account extends React.Component {
   }
 
   toggleShowDetails = (event) => {
-    this.props.toggleAcctDetails(event, this.setShowDetails)
+    let showing = this.state.showChart
+    this.props.toggleAcctDetails(event, showing)
+    this.setState({
+      showChart: showing ? false : true
+    })
   }
 
   getChartSettings = () => {
@@ -51,7 +55,7 @@ class Account extends React.Component {
     let chartOptions = {
       title: {
         display: true,
-        text:'Balance History'
+        text:`${this.props.data.accountName} Account Balance History`
       },
       tooltips: {
         mode: 'index',
@@ -80,10 +84,10 @@ class Account extends React.Component {
     }
 
     let numTrans = acctTrans.length
-    let delta = numTrans < 25 ? 1 : Math.ceil(numTrans / 25)
+    let delta = numTrans < 30 ? 1 : Math.ceil(numTrans / 30)
     for (var i = 0; i < numTrans; i += delta) {
-      chartData.labels.unshift(acctTrans[i].transTime)
-      chartData.datasets[0].data.unshift(acctTrans[i].runningBalance)
+      chartData.labels.push(acctTrans[i].transTime)
+      chartData.datasets[0].data.push(acctTrans[i].runningBalance)
 
     }
 

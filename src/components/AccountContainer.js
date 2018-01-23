@@ -37,25 +37,48 @@ class AccountContainer extends React.Component {
     )
   }
 
-  toggleAcctDetails = (event, cb) => {
-    if (this.props.displayingAccountDetails) {
-      //prevents two account details being open
-      if (event.target.innerText === this.props.displayAccounts[0]) {
-        this.props.settings.setDisplayAccounts(this.props.allAccounts)
-        this.props.settings.displayingAccountDetails(false)
-        cb(false)
-      } else {
-        return
-      }
+  toggleAcctDetails = (event, showing) => {
+    let account = event.target.innerText
+    let displayAccounts = this.props.displayAccounts
+    let allAccounts = this.props.allAccounts
+
+    if (showing) {
+      this.removeFromDispAccts(account, displayAccounts, allAccounts)
     } else {
-      this.props.settings.setDisplayAccounts([event.target.innerText])
-      this.props.settings.displayingAccountDetails(true)
-      cb(true)
+      this.addToDispAccts(account, displayAccounts, allAccounts)
     }
   }
 
+  removeFromDispAccts = (account, displayAccounts, allAccounts) => {
+    if (displayAccounts.length === 1) {
+      this.props.settings.setDisplayAccounts(allAccounts)
+      return
+    }
+
+    //maintains same order
+    let newDisplay = []
+    allAccounts.forEach(el => {
+      if (displayAccounts.includes(el) && el !== account) {
+        newDisplay.push(el)
+      }
+    })
+    this.props.settings.setDisplayAccounts(newDisplay)
+  }
+
+  addToDispAccts = (account, displayAccounts, allAccounts) => {
+    let newDisplay = []
+    allAccounts.forEach(el => {
+      if (displayAccounts.includes(el)) {
+        newDisplay.push(el)
+      } else if (el === account) {
+        newDisplay.push(el)
+      }
+    })
+    this.props.settings.setDisplayAccounts(newDisplay)
+  }
+
   filterTransactions = (accounts) => {
-    let displayAccounts = accounts
+    let displayAccounts = [...accounts]
     if (displayAccounts.length === 0) {
       displayAccounts = this.props.allAccounts
     }
