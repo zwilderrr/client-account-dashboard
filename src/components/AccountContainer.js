@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import TransactionTable from './TransactionTable'
 import Account from './Account'
 import * as SettingsActions from '../actions/settings'
-import { Doughnut } from 'react-chartjs-2';
+import { Doughnut, Line } from 'react-chartjs-2';
 import { Grid, Row, Col } from 'react-bootstrap'
 const moment = require('moment')
 const numeral = require('numeral')
@@ -25,6 +25,16 @@ class AccountContainer extends React.Component {
     this.setState({
       searchInput: event.target.value
     })
+  }
+
+  getAccounts = () => {
+    return this.props.allAccounts.map((accountName, index) =>
+      <Account
+        key={index}
+        data={this.props.transactionData[accountName]}
+        toggleAcctDetails={this.toggleAcctDetails}
+      />
+    )
   }
 
   toggleAcctDetails = (event, cb) => {
@@ -78,6 +88,53 @@ class AccountContainer extends React.Component {
       }
     })
     return filteredBySearch
+  }
+
+  getDoughnutChartSettings = () => {
+    const colors = [
+      "rgba(52,152,219,.5)",
+      "rgba(52,152,219,.5)",
+      "rgba(46,204,113,.5)",
+      "rgba(46,204,113,.45)",
+    ]
+    let colorIndex = 0
+    let chartData = {
+      labels: [],
+      datasets: [
+        {
+          data: [],
+          backgroundColor: [],
+          hoverBackgroundColor: [],
+          hoverBorderColor: "transparent"
+        }
+      ]
+  	}
+    let chartOptions = {
+      cutoutPercentage: 80,
+      maintainAspectRatio: true,
+      responsive: true,
+      tooltips: {
+        intersect: true,
+        callbacks: {
+          label: this.formatTooltipBalance,
+          title: this.getAccountName
+        }
+      },
+    }
+
+    this.props.allAccounts.forEach(accountName => {
+      if (colorIndex >= colors.length - 1) {
+        colorIndex = 1
+      }
+
+      chartData.labels.push(`${accountName} Account`)
+      chartData.datasets[0].data.push(this.props.transactionData[accountName].balance)
+      chartData.datasets[0].backgroundColor.push(colors[colorIndex])
+      chartData.datasets[0].hoverBackgroundColor.push(colors[colorIndex + 1])
+      colorIndex += 2
+    })
+
+    return [chartData, chartOptions]
   }
 
   getChartSettings = () => {
@@ -172,7 +229,7 @@ class AccountContainer extends React.Component {
             </Col>
 
           </Row>
-          
+
           <Col sm={6}>
             <input
               type="text"

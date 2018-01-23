@@ -43,21 +43,23 @@ class App extends React.Component {
     let transactions = []
     let runningBalance = 0
 
-    for (var i = res.length - 1; i >= 0; i--) {
+    for (let i = res.length - 1; i >= 0; i--) {
       let transaction = res[i]
       let transTo = transaction.transTo.split(" Account")[0]
       let transFrom = transaction.transFrom.split(" Account")[0]
 
       if (this.isOfThisAccount(transaction, accountName, transTo, transFrom)) {
+        let debug = this.transactionAmt(transaction, accountName, transTo, transFrom) * 100
         runningBalance += (this.transactionAmt(transaction, accountName, transTo, transFrom) * 100)
         transaction.runningBalance = (runningBalance / 100)
+
         transactions.unshift(transaction)
       }
     }
     return transactions
   }
 
-  transactionAmt = (transaction, accountName, transTo, transFrom) => {
+  transactionAmt = (transaction, accountName, transTo, transFrom, i) => {
     if (this.props.allAccounts.includes(transTo) && this.props.allAccounts.includes(transFrom)) {
       //"negitive value" coming into the account
       if (transTo === accountName) {
