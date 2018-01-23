@@ -1,6 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+
 const moment = require('moment')
 const numeral = require('numeral')
 
@@ -13,7 +12,6 @@ class Transaction extends React.Component {
   formatTransAmt = (amt) => {
     return numeral(amt).format('$0,0.00')
   }
-
 
   render() {
     return(
@@ -29,13 +27,4 @@ class Transaction extends React.Component {
   }
 }
 
-// "transId": 24,
-//  "custId": 0,
-//  "transTime": 1515703912733,
-//  "transAmt": -53.23,
-//  "description": "Team Lunch",
-//  "transTo": "Restaurant",
-//  "transFrom": "Checking Account"
-
-
-export default connect(null, null)(Transaction)
+export default Transaction

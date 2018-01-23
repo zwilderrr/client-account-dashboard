@@ -1,11 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Doughnut, Line } from 'react-chartjs-2'
+import { Grid, Row, Col } from 'react-bootstrap'
+
 import TransactionTable from './TransactionTable'
 import Account from './Account'
 import * as SettingsActions from '../actions/settings'
-import { Doughnut, Line } from 'react-chartjs-2';
-import { Grid, Row, Col } from 'react-bootstrap'
 const moment = require('moment')
 const numeral = require('numeral')
 
@@ -39,7 +40,6 @@ class AccountContainer extends React.Component {
   }
 
   toggleAcctDetails = (account, showing) => {
-    console.log(account);
     let displayAccounts = this.props.displayAccounts
     let allAccounts = this.props.allAccounts
     if (!showing) {
@@ -50,7 +50,7 @@ class AccountContainer extends React.Component {
   }
 
   removeFromDispAccts = (account, displayAccounts, allAccounts) => {
-        //maintains same order
+    //maintains same display order
     let newDisplay = []
     allAccounts.forEach(el => {
       if (displayAccounts.includes(el) && el !== account) {
@@ -122,7 +122,6 @@ class AccountContainer extends React.Component {
           data: [],
           fill: true,
           showLine: true,
-
         }
       ]
     }
@@ -155,7 +154,6 @@ class AccountContainer extends React.Component {
           }
         }]
       }
-
     }
 
     let numTrans = acctTrans.length
@@ -163,7 +161,6 @@ class AccountContainer extends React.Component {
     for (var i = 0; i < numTrans; i += delta) {
       chartData.labels.unshift(acctTrans[i].transTime)
       chartData.datasets[0].data.unshift(acctTrans[i].runningBalance)
-
     }
 
     return [chartData, chartOptions]
@@ -171,7 +168,6 @@ class AccountContainer extends React.Component {
 
   formatLineTooltipBalance = (tooltipItem) => {
     return numeral(tooltipItem.yLabel).format('$0,0.00')
-
   }
 
   formatLineTooltipTitle = (tooltipItem, data) => {
@@ -244,7 +240,6 @@ class AccountContainer extends React.Component {
     return data.labels[tooltipItem[0].index]
   }
 
-
   render() {
     const transactionData = this.filterTransactions(this.props.displayAccounts)
     const accounts = this.getAccounts()
@@ -252,7 +247,6 @@ class AccountContainer extends React.Component {
     const doughnutChartOptions = this.getDoughnutChartSettings()[1]
     const lineChartData = this.getLineChartSettings()[0]
     const lineChartOptions = this.getLineChartSettings()[1]
-    console.log(this.props.displayAccounts);
 
     return(
       <div>
@@ -261,6 +255,7 @@ class AccountContainer extends React.Component {
             <h1>Welcome, Pritish!</h1>
             <br/>
             <h3>Account Overview</h3>
+            
             <Row>
               <Col className="dash-item" sm={4}>
                 <Doughnut width={145} data={doughnutChartData} options={doughnutChartOptions}/>
@@ -270,7 +265,6 @@ class AccountContainer extends React.Component {
                 <Line data={lineChartData} options={lineChartOptions} />
               </Col>
             </Row>
-
 
             <Row className="dash-item">
               <div className="search-box">
@@ -294,6 +288,7 @@ class AccountContainer extends React.Component {
                 {accounts}
               </Col>
             </Row>
+
           </Row>
         </Grid>
       </div>

@@ -18,10 +18,7 @@ export function getTransactionData(custId, parseCustData) {
         })
       })
     .catch(res => {
-      // dispatch({
-      //   type: "DATA_FETCH_FAILED",
-      //   payload: {
-      //   }
+      console.log("Data fetch failed", res);
       })
     }
   }

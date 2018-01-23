@@ -1,8 +1,7 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import CountUp from 'react-countup'
-import {Line} from 'react-chartjs-2';
-import {Col} from 'react-bootstrap'
+import { Line } from 'react-chartjs-2';
+import { Col } from 'react-bootstrap'
 const moment = require('moment')
 const numeral = require('numeral')
 
@@ -15,12 +14,6 @@ class Account extends React.Component {
       showChart: false
     }
   }
-
-  // setShowDetails = (boolean) => {
-  //   this.setState({
-  //     showChart: boolean
-  //   })
-  // }
 
   toggleShowDetails = () => {
     let account = this.props.data.accountName
@@ -50,10 +43,6 @@ class Account extends React.Component {
       colorIndex = 0
     }
 
-    // let colorIndex = this.props.colorIndex
-    //colorIndex should be set to the index + 1 of the acctName in allAccounts (exept if it's zero, in which case colorIndex should equal 0)
-    //currently not passing in props correctly
-
     let chartData = {
       labels: [],
       datasets: [
@@ -65,7 +54,6 @@ class Account extends React.Component {
           data: [],
           fill: false,
           showLine: true,
-
         }
       ]
     }
@@ -98,7 +86,6 @@ class Account extends React.Component {
           }
         }]
       }
-
     }
 
     let numTrans = acctTrans.length
@@ -112,13 +99,11 @@ class Account extends React.Component {
       chartData.datasets.backgroundColor = colors[colorIndex]
       chartData.datasets.borderColor = colors[colorIndex + 1]
     }
-
     return [chartData, chartOptions]
   }
 
   formatTooltipBalance = (tooltipItem) => {
     return numeral(tooltipItem.yLabel).format('$0,0.00')
-
   }
 
   formatTooltipTitle = (tooltipItem, data) => {
@@ -131,7 +116,6 @@ class Account extends React.Component {
     return (this.state.showChart) ? "animated fadeIn" : "none"
   }
 
-
   render() {
     const chartSettings = this.getChartSettings()
     const chartStyle = this.getChartStyle()
@@ -143,24 +127,23 @@ class Account extends React.Component {
       <div onClick={this.toggleShowDetails} className="account">
         <h2 >{this.props.data.accountName}</h2>
         <div>
-        <CountUp className="count-up" start={0} end={this.props.data.balance}
-          duration={1.5}
-          useGrouping={true}
-          separator={","}
-          decimals={2}
-          decimal={"."}
-          prefix={"$"}
-        />
+          <CountUp className="count-up" start={0} end={this.props.data.balance}
+            duration={1.5}
+            useGrouping={true}
+            separator={","}
+            decimals={2}
+            decimal={"."}
+            prefix={"$"}
+          />
         </div>
 
         <div className={`${showLineChart} line-chart`}>
           <Line data={chartData} options={chartOptions} redraw/>
         </div>
-
       </div>
     )
   }
 }
 
 
-export default connect(null, null)(Account)
+export default Account

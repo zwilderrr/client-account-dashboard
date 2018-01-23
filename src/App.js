@@ -1,12 +1,12 @@
-import React from 'react';
+import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+
 import DashboardContainer from './components/DashboardContainer'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import * as DataActions from './actions/data'
 import * as SettingsActions from './actions/settings'
-
 
 
 class App extends React.Component {

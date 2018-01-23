@@ -1,8 +1,7 @@
 import React from 'react'
-import { connect } from 'react-redux'
-// import { bindActionCreators } from 'redux'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { Modal, Button, Row } from 'react-bootstrap'
+
 import Transaction from './Transaction'
 const moment = require('moment')
 const numeral = require('numeral')
@@ -80,4 +79,4 @@ class TransactionTable extends React.Component {
   }
 }
 
-export default connect(null, null)(TransactionTable)
+export default TransactionTable
