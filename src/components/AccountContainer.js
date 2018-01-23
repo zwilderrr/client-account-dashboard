@@ -121,9 +121,9 @@ class AccountContainer extends React.Component {
       datasets: [
         {
           label: "Balance",
-          backgroundColor: "rgba(219, 52, 52, 0.3)",
+          backgroundColor: "rgba(232, 132, 0, 0.3)",
           pointRadius: 0,
-          borderColor: "rgba(219, 52, 52, 0.7)",
+          borderColor: "rgba(232, 132, 0, 0.7)",
           data: [],
           fill: true,
           showLine: true,
@@ -188,9 +188,15 @@ class AccountContainer extends React.Component {
   getDoughnutChartSettings = () => {
     const colors = [
       "rgba(52,152,219,.5)",
-      "rgba(52,152,219,.5)",
+      "rgba(52,152,219,.45)",
       "rgba(46,204,113,.5)",
       "rgba(46,204,113,.45)",
+      "rgba(49, 46, 204, 0.5)",
+      "rgba(49, 46, 204, 0.45)",
+      "rgba(204, 46, 202, 0.5)",
+      "rgba(204, 46, 202, 0.45)",
+      "rgba(196, 204, 46, 0.5)",
+      "rgba(196, 204, 46, 0.45)",
     ]
     let colorIndex = 0
     let chartData = {
