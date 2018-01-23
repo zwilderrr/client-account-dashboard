@@ -4,6 +4,13 @@
   font-family: sans-serif;
 }
 
+h3 {
+  text-align: center;
+}
+
+input:focus {
+  outline: 0
+}
 .background {
   background-color: rgba(0, 0, 0, 0.03);
   color: rgba(0, 0, 0, 0.6)
@@ -21,11 +28,13 @@
   border-color: rgba(0, 0, 0, 0.03);
   border-width: thick;
   background-color: white;
+  margin-bottom: .5em
 }
 
 .stripe {
   background: rgba(255, 228, 45, 0.52);
   padding: 2%;
+  text-align: right
 }
 
 .footer {

@@ -16,15 +16,16 @@ class Account extends React.Component {
     }
   }
 
-  setShowDetails = (boolean) => {
-    this.setState({
-      showChart: boolean
-    })
-  }
+  // setShowDetails = (boolean) => {
+  //   this.setState({
+  //     showChart: boolean
+  //   })
+  // }
 
-  toggleShowDetails = (event) => {
+  toggleShowDetails = () => {
+    let account = this.props.data.accountName
     let showing = this.state.showChart ? false : true
-    this.props.toggleAcctDetails(event, showing)
+    this.props.toggleAcctDetails(account, showing)
     this.setState({
       showChart: showing
     })

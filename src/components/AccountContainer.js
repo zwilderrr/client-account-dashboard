@@ -38,11 +38,10 @@ class AccountContainer extends React.Component {
     )
   }
 
-  toggleAcctDetails = (event, showing) => {
-    let account = event.target.innerText
+  toggleAcctDetails = (account, showing) => {
+    console.log(account);
     let displayAccounts = this.props.displayAccounts
     let allAccounts = this.props.allAccounts
-
     if (!showing) {
       this.removeFromDispAccts(account, displayAccounts, allAccounts)
     } else {
@@ -202,7 +201,9 @@ class AccountContainer extends React.Component {
           data: [],
           backgroundColor: [],
           hoverBackgroundColor: [],
-          hoverBorderColor: "transparent"
+          borderWidth: 3,
+          hoverBorderColor: "transparent",
+          hoverBorderWidth: 0
         }
       ]
   	}
@@ -251,12 +252,15 @@ class AccountContainer extends React.Component {
     const doughnutChartOptions = this.getDoughnutChartSettings()[1]
     const lineChartData = this.getLineChartSettings()[0]
     const lineChartOptions = this.getLineChartSettings()[1]
+    console.log(this.props.displayAccounts);
 
     return(
       <div>
         <Grid fluid>
           <Row className="grid-padding">
-          <h3>All accounts</h3>
+            <h1>Welcome, Pritish!</h1>
+            <br/>
+            <h3>Account Overview</h3>
             <Row>
               <Col className="dash-item" sm={4}>
                 <Doughnut width={145} data={doughnutChartData} options={doughnutChartOptions}/>
@@ -292,9 +296,6 @@ class AccountContainer extends React.Component {
             </Row>
           </Row>
         </Grid>
-
-
-
       </div>
     )
   }

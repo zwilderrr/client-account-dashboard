@@ -101,7 +101,7 @@ class App extends React.Component {
     if (this.props.dataLoaded) {
       return (
         <div className="animated fadeIn">
-          <Header />
+          <Header className="header"/>
           <DashboardContainer />
           <Footer />
         </div>
