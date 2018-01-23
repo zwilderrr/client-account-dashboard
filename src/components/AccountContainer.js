@@ -90,6 +90,78 @@ class AccountContainer extends React.Component {
     return filteredBySearch
   }
 
+  getLineChartSettings = () => {
+    let acctTrans = this.props.rawData
+
+    let chartData = {
+      labels: [],
+      datasets: [
+        {
+          label: "Balance",
+          backgroundColor: "rgba(219, 52, 52, 0.3)",
+          pointRadius: 0,
+          borderColor: "rgba(219, 52, 52, 0.7)",
+          data: [],
+          fill: true,
+          showLine: true,
+
+        }
+      ]
+    }
+
+    let chartOptions = {
+      title: {
+        display: true,
+        text:'Balance History'
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+        callbacks: {
+          label: this.formatLineTooltipBalance,
+          title: this.formatLineTooltipTitle
+        }
+      },
+      maintainAspectRatio: true,
+      responsive: true,
+      legend: false,
+      scales: {
+        yAxes: [{
+          ticks: {
+            callback: (value) => numeral(value).format('$0,0')
+          }
+        }],
+        xAxes: [{
+          ticks: {
+            callback: (utc) => moment(utc).format('D/M/Y')
+          }
+        }]
+      }
+
+    }
+
+    let numTrans = acctTrans.length
+    let delta = numTrans < 25 ? 1 : Math.ceil(numTrans / 25)
+    for (var i = 0; i < numTrans; i += delta) {
+      chartData.labels.unshift(acctTrans[i].transTime)
+      chartData.datasets[0].data.unshift(acctTrans[i].runningBalance)
+
+    }
+
+    return [chartData, chartOptions]
+  }
+
+  formatLineTooltipBalance = (tooltipItem) => {
+    return numeral(tooltipItem.yLabel).format('$0,0.00')
+
+  }
+
+  formatLineTooltipTitle = (tooltipItem, data) => {
+    let index = tooltipItem[0].index
+    let utc = data.labels[index]
+    return moment(utc).format('ddd MMM Do, YYYY @ h:mm:ss a')
+  }
+
   getDoughnutChartSettings = () => {
     const colors = [
       "rgba(52,152,219,.5)",
@@ -116,55 +188,8 @@ class AccountContainer extends React.Component {
       tooltips: {
         intersect: true,
         callbacks: {
-          label: this.formatTooltipBalance,
-          title: this.getAccountName
-        }
-      },
-    }
-
-    this.props.allAccounts.forEach(accountName => {
-      if (colorIndex >= colors.length - 1) {
-        colorIndex = 1
-      }
-
-      chartData.labels.push(`${accountName} Account`)
-      chartData.datasets[0].data.push(this.props.transactionData[accountName].balance)
-      chartData.datasets[0].backgroundColor.push(colors[colorIndex])
-      chartData.datasets[0].hoverBackgroundColor.push(colors[colorIndex + 1])
-      colorIndex += 2
-    })
-
-    return [chartData, chartOptions]
-  }
-
-  getChartSettings = () => {
-    const colors = [
-      "rgba(52,152,219,.5)",
-      "rgba(52,152,219,.5)",
-      "rgba(46,204,113,.5)",
-      "rgba(46,204,113,.45)",
-    ]
-    let colorIndex = 0
-    let chartData = {
-      labels: [],
-      datasets: [
-        {
-          data: [],
-          backgroundColor: [],
-          hoverBackgroundColor: [],
-          hoverBorderColor: "transparent"
-        }
-      ]
-  	}
-    let chartOptions = {
-      cutoutPercentage: 80,
-      maintainAspectRatio: true,
-      responsive: true,
-      tooltips: {
-        intersect: true,
-        callbacks: {
-          label: this.formatTooltipBalance,
-          title: this.getAccountName
+          label: this.formatDoughnutTooltipBalance,
+          title: this.formatDoughnutTooltipTitle
         }
       },
     }
@@ -183,13 +208,13 @@ class AccountContainer extends React.Component {
     return [chartData, chartOptions]
   }
 
-  formatTooltipBalance = (tooltipItem, data) => {
+  formatDoughnutTooltipBalance = (tooltipItem, data) => {
     let index = tooltipItem.index
     let balance = data.datasets[0].data[index]
     return `Balance: ${numeral(balance).format('$0,0.00')}`
   }
 
-  getAccountName = (tooltipItem, data) => {
+  formatDoughnutTooltipTitle = (tooltipItem, data) => {
     return data.labels[tooltipItem[0].index]
   }
 
@@ -202,18 +227,16 @@ class AccountContainer extends React.Component {
       />
     )
   }
-  //
-  // componentDidMount() {
-  // 		console.log(this.refs.chart.chart_instance); // returns a Chart.js instance reference
-  // 	}
+
 
 
   render() {
-    console.log(this.refs);
     const transactionData = this.filterTransactions(this.props.displayAccounts)
     const accounts = this.getAccounts()
-    const chartData = this.getChartSettings()[0]
-    const chartOptions = this.getChartSettings()[1]
+    const doughnutChartData = this.getDoughnutChartSettings()[0]
+    const doughnutChartOptions = this.getDoughnutChartSettings()[1]
+    const lineChartData = this.getLineChartSettings()[0]
+    const lineChartOptions = this.getLineChartSettings()[1]
     return(
       <div>
         <h1>AccountContainer</h1>
@@ -222,10 +245,11 @@ class AccountContainer extends React.Component {
           <Row className="grid-padding">
           <h1>All accounts</h1>
             <Col sm={5}>
-              <Doughnut ref='chart' data={chartData} options={chartOptions}/>
+              <Doughnut width={200} data={doughnutChartData} options={doughnutChartOptions}/>
             </Col>
 
             <Col sm={7}>
+              <Line data={lineChartData} options={lineChartOptions} />
             </Col>
 
           </Row>
@@ -257,6 +281,7 @@ const mapStateToProps = (state) => {
     allAccounts: state.settings.allAccounts,
     displayAccounts: state.settings.displayAccounts,
     displayingAccountDetails: state.settings.displayingAccountDetails,
+
     transactionData: state.data.transactionData,
     rawData: state.data.rawData
   }

@@ -49,17 +49,22 @@ class App extends React.Component {
       let transFrom = transaction.transFrom.split(" Account")[0]
 
       if (this.isOfThisAccount(transaction, accountName, transTo, transFrom)) {
-        let debug = this.transactionAmt(transaction, accountName, transTo, transFrom) * 100
         runningBalance += (this.transactionAmt(transaction, accountName, transTo, transFrom) * 100)
-        transaction.runningBalance = (runningBalance / 100)
-
-        transactions.unshift(transaction)
+        if (transaction.runningBalance) {
+          //it's already processed (ie an internal transaction) and tf already has a runningBalance associated with it
+          let transDup = JSON.parse(JSON.stringify(transaction))
+          transDup.runningBalance = (runningBalance / 100)
+          transactions.unshift(transaction)
+        } else {
+          transaction.runningBalance = (runningBalance / 100)
+          transactions.unshift(transaction)
+        }
       }
     }
     return transactions
   }
 
-  transactionAmt = (transaction, accountName, transTo, transFrom, i) => {
+  transactionAmt = (transaction, accountName, transTo, transFrom) => {
     if (this.props.allAccounts.includes(transTo) && this.props.allAccounts.includes(transFrom)) {
       //"negitive value" coming into the account
       if (transTo === accountName) {
