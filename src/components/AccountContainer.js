@@ -252,10 +252,10 @@ class AccountContainer extends React.Component {
       <div>
         <Grid fluid>
           <Row className="grid-padding">
-            <h1>Welcome, Pritish!</h1>
+            <h1>Welcome, Zack!</h1>
             <br/>
             <h3>Account Overview</h3>
-            
+
             <Row>
               <Col className="dash-item" sm={4}>
                 <Doughnut width={145} data={doughnutChartData} options={doughnutChartOptions}/>
