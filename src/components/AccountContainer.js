@@ -109,7 +109,7 @@ class AccountContainer extends React.Component {
   }
 
   getLineChartSettings = () => {
-    let acctTrans = this.props.rawData
+    let acctTrans = this.props.transactionData.allAccounts.transactions
 
     let chartData = {
       labels: [],
@@ -159,8 +159,8 @@ class AccountContainer extends React.Component {
     let numTrans = acctTrans.length
     let delta = numTrans < 25 ? 1 : Math.ceil(numTrans / 25)
     for (var i = 0; i < numTrans; i += delta) {
-      chartData.labels.unshift(acctTrans[i].transTime)
-      chartData.datasets[0].data.unshift(acctTrans[i].runningBalance)
+      chartData.labels.push(acctTrans[i].transTime)
+      chartData.datasets[0].data.push(acctTrans[i].runningBalance)
     }
 
     return [chartData, chartOptions]

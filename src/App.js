@@ -42,8 +42,9 @@ class App extends React.Component {
       }
       allAcctsRecord[runningBalance] = parsedData.allAccounts.balance
       parsedData.allAccounts.transactions.push(allAcctsRecord)
-    }
 
+    }
+    console.log(parsedData);
     this.props.data.setTransactionData(parsedData)
   }
 
@@ -86,19 +87,11 @@ class App extends React.Component {
   }
 
   updateWithExternalTrans = (transTo, transFrom, transaction, parsedData, runningBalance) => {
-    //it seems that because money going in can potentially be negative and money going out can be potentially positive, transaction[transTo/transFrom] is trying to access a key that doesn't exist.
-    //first step is to make sure dataGenerator is producing positive and negative amounts when it should
     if (transaction.transAmt < 0) {
-      console.log("transFrom - ", transFrom);
-      console.log("transTo - ", transTo);
-      console.log("amount - ", transaction.transAmt);
       parsedData[transFrom].balance += transaction.transAmt
       transaction[runningBalance] = parsedData[transFrom].balance
       parsedData[transFrom].transactions.push(transaction)
     } else {
-      console.log("transFrom - ", transFrom);
-      console.log("transTo - ", transTo);
-      console.log("amount - ", transaction.transAmt);
       parsedData[transTo].balance += transaction.transAmt
       transaction[runningBalance] = parsedData[transTo].balance
       parsedData[transTo].transactions.push(transaction)
