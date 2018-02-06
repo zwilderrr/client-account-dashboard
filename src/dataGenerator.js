@@ -1,11 +1,12 @@
 const moment = require('moment')
+
 let startingData = [
     {
       custId: 0,
       description: "VC funding",
       transAmt: 1000000,
       transFrom: "VC Partners",
-      transId: 23876,
+      transId: 23877,
       transTime: moment().subtract({years: 3}).valueOf(),
       transTo: "Savings Account"
     },
@@ -14,9 +15,18 @@ let startingData = [
       description: "VC funding",
       transAmt: 1000000,
       transFrom: "VC Partners",
-      transId: 23875,
+      transId: 23876,
       transTime: moment().subtract({years: 3, days: 1}).valueOf(),
       transTo: "Checking Account"
+    },
+    {
+      custId: 0,
+      description: "VC funding",
+      transAmt: 1000000,
+      transFrom: "VC Partners",
+      transId: 23875,
+      transTime: moment().subtract({years: 3, days: 1}).valueOf(),
+      transTo: "R & D Account"
     },
     {
       custId: 0,
@@ -35,6 +45,15 @@ let startingData = [
       transId: 23873,
       transTime: moment().subtract({years: 3, days: 3}).valueOf(),
       transTo: "Checking Account"
+    },
+    {
+      custId: 0,
+      description: "Account Opening",
+      transAmt: 0,
+      transFrom: "Account Opening",
+      transId: 23872,
+      transTime: moment().subtract({years: 3, days: 4}).valueOf(),
+      transTo: "R & D Account"
     }
   ]
 
@@ -65,6 +84,7 @@ const randomTransFrom = () => {
   return [
     "Savings Account",
     "Checking Account",
+    "R & D",
     "Customer Payment",
     "Investment"
   ][randomNum([0, 4])]
@@ -99,7 +119,7 @@ const checkData = (newTransaction) => {
   let transTo = newTransaction.transTo
   let transFrom = newTransaction.transFrom
   let transAmt = newTransaction.transAmt
-  let accounts = ["Checking Account", "Savings Account"]
+  let accounts = ["Checking Account", "Savings Account", "R & D"]
 
 
   if (hasNoInternalAccount(transTo, transFrom, accounts)) {

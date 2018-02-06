@@ -4,7 +4,6 @@ let res = data
 
 export function getTransactionData(custId, parseCustData) {
   return function(dispatch) {
-    // debugger
       parseCustData(res)
       dispatch({
         type: "SET_RAW_DATA",
