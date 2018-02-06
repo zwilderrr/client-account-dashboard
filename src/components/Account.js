@@ -132,7 +132,7 @@ class Account extends React.Component {
         </div>
 
         <div className={`${showLineChart} line-chart`}>
-          <Line data={chartData} options={chartOptions} redraw />
+          <Line data={chartData} options={chartOptions} />
         </div>
       </div>
     )
