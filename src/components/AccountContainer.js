@@ -116,9 +116,9 @@ class AccountContainer extends React.Component {
       datasets: [
         {
           label: "Balance",
-          backgroundColor: "rgba(33, 163, 0, 0.31)",
+          backgroundColor: "rgba(255, 153, 0, 0.31)",
           pointRadius: 0,
-          borderColor: "rgba(33, 163, 0, 0.5)",
+          borderColor: "rgba(255, 153, 0, 0.5)",
           data: [],
           fill: true,
           showLine: true,
@@ -182,8 +182,8 @@ class AccountContainer extends React.Component {
       "rgba(52,152,219,.45)",
       "rgba(46,204,113,.5)",
       "rgba(46,204,113,.45)",
-      "rgba(49, 46, 204, 0.5)",
-      "rgba(49, 46, 204, 0.45)",
+      "rgba(49, 46, 204, 0.3)",
+      "rgba(49, 46, 204, 0.25)",
       "rgba(204, 46, 202, 0.5)",
       "rgba(204, 46, 202, 0.45)",
       "rgba(196, 204, 46, 0.5)",
@@ -258,7 +258,7 @@ class AccountContainer extends React.Component {
 
             <Row>
               <Col className="dash-item" sm={4}>
-                <Doughnut width={145} data={doughnutChartData} options={doughnutChartOptions}/>
+                <Doughnut width={143} data={doughnutChartData} options={doughnutChartOptions}/>
               </Col>
 
               <Col className="dash-item" sm={8}>
