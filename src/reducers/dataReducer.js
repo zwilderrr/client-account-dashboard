@@ -1,4 +1,4 @@
-export default function dataReducer(state = {transactionData: [], rawData: [], dataLoaded: true}, action) {
+export default function dataReducer(state = {transactionData: [], rawData: [], dataLoaded: false}, action) {
   switch (action.type) {
     case "SET_TRANSACTION_DATA":
       return state = {...state, transactionData: action.payload, dataLoaded: true}

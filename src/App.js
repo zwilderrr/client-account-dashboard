@@ -7,6 +7,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import * as DataActions from './actions/data'
 import * as SettingsActions from './actions/settings'
+const moment = require('moment')
 
 
 class App extends React.Component {
@@ -18,6 +19,8 @@ class App extends React.Component {
 
   parseCustData = (res) => {
     //a list of customer accounts would be retrieved from the api call in the proper order
+    moment()
+    debugger
     let custAccounts = ["Checking", "Savings"]
     this.props.settings.setAllAccounts(custAccounts)
 
@@ -33,7 +36,6 @@ class App extends React.Component {
         transTime: transaction.transTime,
         transAmt: 0
       }
-
       if (this.isInternalTransaction(transTo, transFrom)) {
         this.updateWithInternalTrans(transTo, transFrom, transaction, parsedData, runningBalance)
       } else {
@@ -55,6 +57,7 @@ class App extends React.Component {
         transactions: []
       }
     }
+    let hey = this.props.allAccounts
 
     this.props.allAccounts.forEach(acct => {
       skeleton[acct] = {
@@ -86,11 +89,19 @@ class App extends React.Component {
   }
 
   updateWithExternalTrans = (transTo, transFrom, transaction, parsedData, runningBalance) => {
+    //it seems that because money going in can potentially be negative and money going out can be potentially positive, transaction[transTo/transFrom] is trying to access a key that doesn't exist.
+    //first step is to make sure dataGenerator is producing positive and negative amounts when it should
     if (transaction.transAmt < 0) {
+      console.log("transFrom - ", transFrom);
+      console.log("transTo - ", transTo);
+      console.log("amount - ", transaction.transAmt);
       parsedData[transFrom].balance += transaction.transAmt
       transaction[runningBalance] = parsedData[transFrom].balance
       parsedData[transFrom].transactions.push(transaction)
     } else {
+      console.log("transFrom - ", transFrom);
+      console.log("transTo - ", transTo);
+      console.log("amount - ", transaction.transAmt);
       parsedData[transTo].balance += transaction.transAmt
       transaction[runningBalance] = parsedData[transTo].balance
       parsedData[transTo].transactions.push(transaction)

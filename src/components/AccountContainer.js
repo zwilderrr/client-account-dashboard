@@ -150,7 +150,7 @@ class AccountContainer extends React.Component {
         }],
         xAxes: [{
           ticks: {
-            callback: (utc) => moment(utc).format('D/M/Y')
+            callback: (unix) => moment(unix).format('D/M/Y')
           }
         }]
       }
@@ -172,8 +172,8 @@ class AccountContainer extends React.Component {
 
   formatLineTooltipTitle = (tooltipItem, data) => {
     let index = tooltipItem[0].index
-    let utc = data.labels[index]
-    return moment(utc).format('ddd MMM Do, YYYY @ h:mm:ss a')
+    let unix = data.labels[index]
+    return moment(unix).format('ddd MMM Do, YYYY @ h:mm:ss a')
   }
 
   getDoughnutChartSettings = () => {
