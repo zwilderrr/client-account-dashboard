@@ -5,7 +5,7 @@ let startingData = [
       description: "VC funding",
       transAmt: 1000000,
       transFrom: "VC Partners",
-      transId: 23874,
+      transId: 23876,
       transTime: moment().subtract({years: 3}).valueOf(),
       transTo: "Savings Account"
     },
@@ -16,6 +16,24 @@ let startingData = [
       transFrom: "VC Partners",
       transId: 23875,
       transTime: moment().subtract({years: 3, days: 1}).valueOf(),
+      transTo: "Checking Account"
+    },
+    {
+      custId: 0,
+      description: "Account Opening",
+      transAmt: 0,
+      transFrom: "Account Opening",
+      transId: 23874,
+      transTime: moment().subtract({years: 3, days: 2}).valueOf(),
+      transTo: "Savings Account"
+    },
+    {
+      custId: 0,
+      description: "Account Opening",
+      transAmt: 0,
+      transFrom: "Account Opening",
+      transId: 23873,
+      transTime: moment().subtract({years: 3, days: 3}).valueOf(),
       transTo: "Checking Account"
     }
   ]

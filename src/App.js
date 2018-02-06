@@ -44,7 +44,6 @@ class App extends React.Component {
       parsedData.allAccounts.transactions.push(allAcctsRecord)
 
     }
-    console.log(parsedData);
     this.props.data.setTransactionData(parsedData)
   }
 
