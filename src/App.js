@@ -7,7 +7,6 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import * as DataActions from './actions/data'
 import * as SettingsActions from './actions/settings'
-const moment = require('moment')
 
 
 class App extends React.Component {
@@ -19,8 +18,6 @@ class App extends React.Component {
 
   parseCustData = (res) => {
     //a list of customer accounts would be retrieved from the api call in the proper order
-    moment()
-    debugger
     let custAccounts = ["Checking", "Savings"]
     this.props.settings.setAllAccounts(custAccounts)
 
