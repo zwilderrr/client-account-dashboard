@@ -52,13 +52,14 @@ class TransactionTable extends React.Component {
       <div>
       <div>
         <h3>Transaction Table</h3>
-        <BootstrapTable width={30} data={this.props.transactionData} options={options} striped hover responsive>
+        <BootstrapTable width={30} height={1000} data={this.props.transactionData} options={options} hover responsive scrollTop={'Top'}>
           <TableHeaderColumn isKey dataSort dataField='transTime' dataFormat={this.formatDate}>Date</TableHeaderColumn>
           <TableHeaderColumn dataSort dataField='description'>Description</TableHeaderColumn>
           <TableHeaderColumn dataSort dataField='transFrom'>Transfer From</TableHeaderColumn>
           <TableHeaderColumn dataSort dataField='transTo'>Transfer To</TableHeaderColumn>
           <TableHeaderColumn dataSort dataFormat={this.formatTransAmt} dataField='transAmt'>Amount</TableHeaderColumn>
         </BootstrapTable>
+        <div className="table-bottom"></div>
       </div>
 
 
