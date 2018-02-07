@@ -17,10 +17,8 @@ class App extends React.Component {
   }
 
   parseCustData = (res) => {
-    //a list of customer accounts would be retrieved from the api call in the proper order
     let custAccounts = ["Checking", "Savings", "R & D"]
     this.props.settings.setAllAccounts(custAccounts)
-    console.log(this.props.allAccounts);
 
     let parsedData = this.makeParsedDataSkeleton()
 
@@ -63,7 +61,6 @@ class App extends React.Component {
         transactions: []
       }
     })
-
     return skeleton
   }
 
