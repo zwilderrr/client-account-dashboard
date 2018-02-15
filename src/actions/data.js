@@ -1,6 +1,5 @@
 import rootDomain from '../adapters/rootDomain'
-import {data} from '../dataGenerator'
-let res = data
+import {res} from '../dataGenerator'
 
 export function getTransactionData(custId, parseCustData) {
   return function(dispatch) {
@@ -9,6 +8,13 @@ export function getTransactionData(custId, parseCustData) {
         type: "SET_RAW_DATA",
         payload: res
       })
+      // setTimeout(() => {
+      //   parseCustData(res)
+      //   dispatch({
+      //     type: "SET_RAW_DATA",
+      //     payload: res
+      //   })
+      // }, 0)
     }
   }
 

@@ -173,5 +173,4 @@ const dataGenerator = (data) => {
   return data
 }
 
-let data = dataGenerator(startingData)
-export {data}
+export const res = dataGenerator(startingData)
