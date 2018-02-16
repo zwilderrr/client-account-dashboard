@@ -18,7 +18,6 @@ class App extends React.Component {
 
   parseCustData = (res) => {
     let custAccounts = ["Checking", "Savings", "R & D"]
-    
     this.props.settings.setAllAccounts(custAccounts)
 
     let parsedData = this.makeParsedDataSkeleton()
