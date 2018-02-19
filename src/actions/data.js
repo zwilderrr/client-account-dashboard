@@ -1,9 +1,9 @@
 import rootDomain from '../adapters/rootDomain'
 import {res} from '../dataGenerator'
 
-export function getTransactionData(custId, parseCustData) {
+export function getTransactionData(custId, setCustomerAccounts) {
   return function(dispatch) {
-      parseCustData(res)
+      setCustomerAccounts(res)
       dispatch({
         type: "SET_RAW_DATA",
         payload: res

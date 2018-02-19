@@ -13,19 +13,22 @@ class App extends React.Component {
 
   componentDidMount = () => {
     let custId = 0
-    this.props.data.getTransactionData(custId, this.parseCustData)
+    this.props.data.getTransactionData(custId, this.setCustomerAccounts)
   }
 
-  parseCustData = (res) => {
+  setCustomerAccounts = (res) => {
     let custAccounts = ["Checking", "Savings", "R & D"]
     new Promise((resolve, reject) => {
+      console.log("before settings action");
+      //really setAllAccounts should return a Promise, which i can chain a .then(res => this.parseCustomerData)
       this.props.settings.setAllAccounts(custAccounts)
-      console.log("after set all accounts");
-      resolve(res)
-    }).then((res) => this.actuallyParseData(res))
+      console.log("after settings action");
+      resolve(res, this.props.allAccounts)
+    }).then((res) => this.parseCustomerData(res))
   }
 
-  actuallyParseData = (res) => {
+  parseCustomerData = (res, accounts ) => {
+    console.log(accounts);
     let parsedData = this.makeParsedDataSkeleton()
 
     for (let i = res.length - 1; i >= 0; i--) {

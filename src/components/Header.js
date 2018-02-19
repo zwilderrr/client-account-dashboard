@@ -4,7 +4,7 @@ class Header extends React.Component {
   render() {
     return(
       <div className="stripe">
-        <h4>Foundation Stone Bank</h4>
+        <h4>New York Venture Bank</h4>
       </div>
     )
   }

@@ -4,7 +4,7 @@ class Footer extends React.Component {
   render() {
     return(
       <div className="stripe">
-        <h5>Ⓒ 2018 Foundation Stone Bank</h5>
+        <h5>Ⓒ 2018 New York Venture Bank</h5>
       </div>
     )
   }
