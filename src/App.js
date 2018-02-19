@@ -18,7 +18,16 @@ class App extends React.Component {
 
   parseCustData = (res) => {
     let custAccounts = ["Checking", "Savings", "R & D"]
-    this.props.settings.setAllAccounts(custAccounts)
+    new Promise((resolve, reject) => {
+      this.props.settings.setAllAccounts(custAccounts)
+      console.log("after set all accounts");
+      resolve(res)
+    }).then((res) => this.actuallyParseData(res))
+  }
+
+  actuallyParseData = (res) => {
+
+    console.log("actually parse");
 
     let parsedData = this.makeParsedDataSkeleton()
 
