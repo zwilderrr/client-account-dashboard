@@ -26,9 +26,6 @@ class App extends React.Component {
   }
 
   actuallyParseData = (res) => {
-
-    console.log("actually parse");
-
     let parsedData = this.makeParsedDataSkeleton()
 
     for (let i = res.length - 1; i >= 0; i--) {
