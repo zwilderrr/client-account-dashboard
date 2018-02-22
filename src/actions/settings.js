@@ -1,5 +1,4 @@
 export function setAllAccounts(custAccounts) {
-  console.log("settings action");
   return function(dispatch) {
     dispatch({
       type: "SET_ALL_ACCOUNTS",

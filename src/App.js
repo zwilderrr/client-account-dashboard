@@ -14,21 +14,20 @@ class App extends React.Component {
   componentDidMount = () => {
     let custId = 0
     this.props.data.getTransactionData(custId, this.setCustomerAccounts)
+      .then(res => {
+        this.parseCustomerData(res)
+      })
   }
 
   setCustomerAccounts = (res) => {
     let custAccounts = ["Checking", "Savings", "R & D"]
-    new Promise((resolve, reject) => {
-      console.log("before settings action");
-      //really setAllAccounts should return a Promise, which i can chain a .then(res => this.parseCustomerData)
-      this.props.settings.setAllAccounts(custAccounts)
-      console.log("after settings action");
-      resolve(res, this.props.allAccounts)
-    }).then((res) => this.parseCustomerData(res))
+    this.props.settings.setAllAccounts(custAccounts)
+    return res
   }
 
-  parseCustomerData = (res, accounts ) => {
-    console.log(accounts);
+
+  parseCustomerData = (res) => {
+
     let parsedData = this.makeParsedDataSkeleton()
 
     for (let i = res.length - 1; i >= 0; i--) {
@@ -56,6 +55,7 @@ class App extends React.Component {
   }
 
   makeParsedDataSkeleton = () => {
+    debugger
     let skeleton = {
       allAccounts: {
         balance: 0,
@@ -104,7 +104,7 @@ class App extends React.Component {
   }
 
   setDisplay = () => {
-    if (this.props.dataLoaded) {
+    if (this.props.dataLoaded && this.props.allAccounts.length > 0) {
       return (
         <div className="animated fadeIn">
           <Header className="header"/>
@@ -134,6 +134,7 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
   return {
     allAccounts: state.settings.allAccounts,
+    accountsLoaded: state.settings.accountsLoaded,
     transactionData: state.data.transactionData,
     dataLoaded: state.data.dataLoaded
   }

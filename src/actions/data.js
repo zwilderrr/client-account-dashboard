@@ -3,18 +3,14 @@ import {res} from '../dataGenerator'
 
 export function getTransactionData(custId, setCustomerAccounts) {
   return function(dispatch) {
-      setCustomerAccounts(res)
-      dispatch({
-        type: "SET_RAW_DATA",
-        payload: res
+    return Promise.resolve()
+      .then(json => {
+        dispatch({
+          type: "SET_RAW_DATA",
+          payload: res
+        })
+        return setCustomerAccounts(res)
       })
-      // setTimeout(() => {
-      //   parseCustData(res)
-      //   dispatch({
-      //     type: "SET_RAW_DATA",
-      //     payload: res
-      //   })
-      // }, 0)
     }
   }
 
