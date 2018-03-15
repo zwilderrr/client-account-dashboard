@@ -55,7 +55,6 @@ class App extends React.Component {
   }
 
   makeParsedDataSkeleton = () => {
-    debugger
     let skeleton = {
       allAccounts: {
         balance: 0,
